@@ -1,5 +1,5 @@
 !----------------------------------------------------------------------------
-! (c) Crown copyright 2020 Met Office. All rights reserved.
+! (c) Crown copyright 2020-2024 Met Office. All rights reserved.
 ! The file LICENCE, distributed with this code, contains details of the terms
 ! under which the code may be used.
 !----------------------------------------------------------------------------
@@ -32,7 +32,7 @@ contains
     ! UM modules containing things that need setting
     use dynamics_input_mod, only: numcycles
     use gen_phys_inputs_mod, only: l_mr_physics
-    use model_domain_mod, only: model_type, mt_single_column
+    use model_domain_mod, only: model_type, mt_lfric
     use nlsizes_namelist_mod, only: model_levels, cloud_levels, n_cca_lev, &
          tr_vars
 
@@ -52,9 +52,9 @@ contains
     ! ----------------------------------------------------------------
     ! Model type - contained in UM module model_domain_mod
     ! ----------------------------------------------------------------
-    ! Currently set to single column, as the physics kernels are called 1
-    ! cell at a time. This may change if we pass multiple cells to kernels.
-    model_type = mt_single_column
+    ! Previous usage of mt_single_column has been removed to purge
+    ! ambiguous use in UM codebase
+    model_type = mt_lfric
 
     ! Number of outer iterations of the dynamics - contained in UM
     ! dynamics_input_mod.
