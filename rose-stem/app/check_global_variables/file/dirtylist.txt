@@ -41,7 +41,6 @@ apps/science/jedi_lfric_interface/source/field/jedi_lfric_utils_mod.x90
 apps/science/linear/source/algorithm/tl_rk_alg_timestep_mod.x90
 apps/science/linear/source/algorithm/tl_si_timestep_alg_mod.x90
 apps/science/linear/source/algorithm/transport/common/tl_transport_runtime_collection_mod.F90
-apps/science/linear/source/driver/linear_driver_mod.f90
 apps/science/linear/source/driver/linear_model_data_mod.f90
 apps/science/linear/source/kernel/transport/mol/tl_poly1d_vert_w3_reconstruction_kernel_mod.F90
 apps/science/socrates_interface/source/algorithm/cosp_diags_mod.x90

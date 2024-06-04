@@ -11,8 +11,14 @@
 !> @detail   The initialise and finalise methods set up/close down the modeldb
 !>           as used by the JEDI interface to the linear model. This code uses
 !>           the linear model as the basis to define the routines that need to
-!>           be called to achieve this. A step method is also included that
-!>           calls the linear model step method and ticks the model clock.
+!>           be called to achieve this. The required code to setup the modeldb
+!>           is contained in the linear program file and driver located in:
+!>
+!>             applications/linear_model/source/linear_model.f90
+!>             science/linear/source/driver/linear_driver_mod.f90
+!>
+!>           A step method is also included that calls the linear model step
+!>           method and ticks the model clock.
 !>
 !------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
@@ -138,7 +144,7 @@ contains
     mesh => mesh_collection%get_mesh(prime_mesh_name)
     twod_mesh => mesh_collection%get_mesh(mesh, TWOD)
 
-    ! Assign mesh for aerosol ancillaries.
+    ! Get aerosol ancillary configuration logical
     initialization_nml => modeldb%configuration%get_namelist('initialization')
     call initialization_nml%get_value( 'coarse_aerosol_ancil', &
                                        coarse_aerosol_ancil )
@@ -216,6 +222,7 @@ contains
       call log_event( log_scratch_space, LOG_LEVEL_ERROR )
     end if
 
+    ! Get mesh
     base_mesh_nml => modeldb%configuration%get_namelist('base_mesh')
     call base_mesh_nml%get_value( 'prime_mesh_name', prime_mesh_name )
     mesh => mesh_collection%get_mesh(prime_mesh_name)
@@ -243,11 +250,11 @@ contains
     ! Model configuration finalisation
     call finalise_model( modeldb )
 
-    ! Destroy the fields stored in the modeldb model_data
-    call finalise_model_data( modeldb )
-
     ! Linear model configuration finalisation
     call finalise_linear_model()
+
+    ! Destroy the fields stored in the modeldb model_data
+    call finalise_model_data( modeldb )
 
     ! Finalise infrastructure and constants
     call finalise_infrastructure( modeldb )
