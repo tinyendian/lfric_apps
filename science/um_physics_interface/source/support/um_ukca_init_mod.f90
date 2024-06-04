@@ -331,6 +331,8 @@ module um_ukca_init_mod
   character(len=*), parameter, public :: fldname_ustar = 'u_s'
   character(len=*), parameter, public :: fldname_surf_hf = 'surf_hf'
   character(len=*), parameter, public :: fldname_zbl = 'zbl'
+  character(len=*), parameter, public :: fldname_grid_surf_area =              &
+                                         'grid_surf_area'
   ! Emissions-related drivers (real)
   character(len=*), parameter, public :: fldname_u_scalar_10m =                &
                                          'u_scalar_10m'
@@ -378,6 +380,8 @@ module um_ukca_init_mod
   character(len=*), parameter, public :: fldname_conv_rain3d = 'conv_rain3d'
   character(len=*), parameter, public :: fldname_conv_snow3d = 'conv_snow3d'
   character(len=*), parameter, public :: fldname_rho_r2 = 'rho_r2'
+  character(len=*), parameter, public :: fldname_grid_volume = 'grid_volume'
+  character(len=*), parameter, public :: fldname_grid_airmass = 'grid_airmass'
   ! Offline chemical fields
   character(len=*), parameter, public :: fldname_o3_offline = 'O3'
   character(len=*), parameter, public :: fldname_no3_offline = 'NO3'
@@ -593,6 +597,7 @@ contains
     ! These should be obtained from namelists (chemistry_config) eventually
     integer :: i_tmp_ukca_chem=ukca_chem_off
     logical :: l_ukca_mode = .false.
+    logical :: l_use_gridbox_mass = .false.
     integer :: i_tmp_ukca_activation_scheme
 
     ! Variables for UKCA error handling
@@ -637,6 +642,15 @@ contains
       i_tmp_ukca_activation_scheme = ukca_activation_arg
     end if
 
+    ! Logical to determine whether UKCA expects the mass of air in gridbox from
+    ! parent model. For aerosols, UKCA contains a simplified calculation of a
+    ! 'relative mass' sufficient for deposition and sedimentation processes
+    ! and so does not require the parent to provide this field (=false)
+    if ( chem_scheme == chem_scheme_strattrop .or.  &
+         chem_scheme == chem_scheme_strat_test ) then
+      l_use_gridbox_mass = .true.
+    end if
+
     call ukca_setup( ukca_errcode,                                             &
            ! Context information
            row_length=row_length,                                              &
@@ -673,6 +687,7 @@ contains
            l_ukca_ddepo3_ocean=.false.,                                        &
            l_ukca_dry_dep_so2wet=.true.,                                       &
            l_ukca_ro2_ntp = l_ukca_ro2_ntp,                                    &
+           l_use_gridbox_mass= l_use_gridbox_mass,                             &
            ! UKCA emissions configuration options
            mode_parfrac=2.5_r_um,                                              &
            l_ukca_enable_seadms_ems=.true.,                                    &

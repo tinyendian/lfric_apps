@@ -30,7 +30,7 @@ implicit none
 
 type, public, extends(kernel_type) :: aerosol_ukca_kernel_type
   private
-  type(arg_type) :: meta_args(247) = (/            &
+  type(arg_type) :: meta_args(250) = (/            &
        arg_type( GH_FIELD, GH_REAL, GH_READWRITE, WTHETA ), & ! o3p
        arg_type( GH_FIELD, GH_REAL, GH_READWRITE, WTHETA ), & ! o1d
        arg_type( GH_FIELD, GH_REAL, GH_READWRITE, WTHETA ), & ! o3
@@ -204,6 +204,8 @@ type, public, extends(kernel_type) :: aerosol_ukca_kernel_type
        arg_type( GH_FIELD, GH_REAL, GH_READ, WTHETA ),      & ! m_cl_n
        arg_type( GH_FIELD, GH_REAL, GH_READ, WTHETA ),      & ! m_ci_n
        arg_type( GH_FIELD, GH_REAL, GH_READ, W3 ),          & ! height_w3
+       arg_type( GH_FIELD, GH_REAL, GH_READ, WTHETA ),      & ! wetrho_in_wth
+       arg_type( GH_FIELD, GH_REAL, GH_READ, WTHETA ),      & ! detj_shifted
        arg_type( GH_FIELD, GH_REAL, GH_READ, WTHETA ),      & ! height_wth
        arg_type( GH_FIELD, GH_REAL, GH_READ, WTHETA ),      & ! ls_rain_3d
        arg_type( GH_FIELD, GH_REAL, GH_READ, WTHETA ),      & ! ls_snow_3d
@@ -225,6 +227,7 @@ type, public, extends(kernel_type) :: aerosol_ukca_kernel_type
        arg_type( GH_FIELD, GH_REAL, GH_READ, ANY_DISCONTINUOUS_SPACE_3 ), & ! soil_moisture
        arg_type( GH_FIELD, GH_REAL, GH_READ, ANY_DISCONTINUOUS_SPACE_4 ), & ! latitude
        arg_type( GH_FIELD, GH_REAL, GH_READ, ANY_DISCONTINUOUS_SPACE_4 ), & ! longitude
+       arg_type( GH_FIELD, GH_REAL, GH_READ, ANY_DISCONTINUOUS_SPACE_4 ), & ! grid_surf_area
        arg_type( GH_FIELD, GH_REAL, GH_READ, ANY_DISCONTINUOUS_SPACE_4 ), & ! sin_stellar_declination_rts
        arg_type( GH_FIELD, GH_REAL, GH_READ, ANY_DISCONTINUOUS_SPACE_4 ), & ! stellar_eqn_of_time_rts
        arg_type( GH_FIELD, GH_REAL, GH_READ, ANY_DISCONTINUOUS_SPACE_4 ), & ! soil_roughness
@@ -473,6 +476,8 @@ contains
 !> @param[in]     m_cl_n              Cloud liq mixing ratio at time level n
 !> @param[in]     m_ci_n              Cloud ice mixing ratio at time level n
 !> @param[in]     height_w3           Height of density space above surface (m)
+!> @param[in]     wetrho_in_w3        Wet density in Wtheta space(kg m-3)
+!> @param[in]     detj_shifted        det(J) on Wtheta mesh (for volume)
 !> @param[in]     height_wth          Height of theta space above surface (m)
 !> @param[in]     ls_rain_3d          Large scale rainfall flux (kg m-2 s-1)
 !> @param[in]     ls_snow_3d          Large scale snowfall flux (kg m-2 s-1)
@@ -494,6 +499,7 @@ contains
 !> @param[in]     soil_moisture       Soil moisture content (kg m-2)
 !> @param[in]     latitude            Latitude field (radians)
 !> @param[in]     longitude           Longitude field (radians)
+!> @param[in]     grid_surf_area      Cell face area (m2)
 !> @param[in]     sin_stellar_declination_rts Sin of stellar declination
 !> @param[in]     stellar_eqn_of_time Stellar equation of time (radians)
 !> @param[in]     soil_roughness      Bare soil surface roughness length (m)
@@ -746,6 +752,8 @@ subroutine aerosol_ukca_code( nlayers,                                         &
                               m_cl_n,                                          &
                               m_ci_n,                                          &
                               height_w3,                                       &
+                              wetrho_in_wth,                                   &
+                              detj_shifted,                                    &
                               height_wth,                                      &
                               ls_rain_3d,                                      &
                               ls_snow_3d,                                      &
@@ -767,6 +775,7 @@ subroutine aerosol_ukca_code( nlayers,                                         &
                               soil_moisture,                                   &
                               latitude,                                        &
                               longitude,                                       &
+                              grid_surf_area,                                  &
                               sin_stellar_declination_rts,                     &
                               stellar_eqn_of_time_rts,                         &
                               soil_roughness,                                  &
@@ -1075,6 +1084,9 @@ subroutine aerosol_ukca_code( nlayers,                                         &
                               fldname_l_active_surft,                          &
                               fldname_lai_pft,                                 &
                               fldname_canht_pft,                               &
+                              fldname_grid_surf_area,                          &
+                              fldname_grid_volume,                             &
+                              fldname_grid_airmass,                            &
                               nlev_ent_tr_mix
 
   use log_mod,          only: log_event, log_scratch_space, LOG_LEVEL_ERROR
@@ -1309,6 +1321,8 @@ subroutine aerosol_ukca_code( nlayers,                                         &
   real(kind=r_def), intent(in), dimension(undf_wth) :: m_cl_n
   real(kind=r_def), intent(in), dimension(undf_wth) :: m_ci_n
   real(kind=r_def), intent(in), dimension(undf_w3) :: height_w3
+  real(kind=r_def), intent(in), dimension(undf_wth) :: wetrho_in_wth
+  real(kind=r_def), intent(in), dimension(undf_wth) :: detj_shifted
   real(kind=r_def), intent(in), dimension(undf_wth) :: height_wth
   real(kind=r_def), intent(in), dimension(undf_wth) :: ls_rain_3d
   real(kind=r_def), intent(in), dimension(undf_wth) :: ls_snow_3d
@@ -1330,6 +1344,7 @@ subroutine aerosol_ukca_code( nlayers,                                         &
   real(kind=r_def), intent(in), dimension(undf_soil) :: soil_moisture
   real(kind=r_def), intent(in), dimension(undf_2d) :: latitude
   real(kind=r_def), intent(in), dimension(undf_2d) :: longitude
+  real(kind=r_def), intent(in), dimension(undf_2d) :: grid_surf_area
   real(kind=r_def), intent(in), dimension(undf_2d) ::                          &
     sin_stellar_declination_rts
   real(kind=r_def), intent(in), dimension(undf_2d) :: stellar_eqn_of_time_rts
@@ -1471,6 +1486,10 @@ subroutine aerosol_ukca_code( nlayers,                                         &
   real(r_def), parameter :: tol = 1.0e-10_r_def
   real(r_def), parameter :: raincrit = 0.5_r_def/rsec_per_day
   real(r_def), parameter :: ztodry = 3.0_r_def * rsec_per_hour
+
+  ! Grid cell airmass and volume (for some emissions and diagnostics)
+  real(r_um) :: grid_airmass(1,1,nlayers)
+  real(r_um) :: grid_volume(1,1,nlayers)
 
   ! UKCA error reporting variables
   character(len=ukca_maxlen_message)  :: ukca_errmsg  ! Error return message
@@ -2014,6 +2033,23 @@ subroutine aerosol_ukca_code( nlayers,                                         &
                               planet_radius
   end do
 
+  ! Set up grid cell volume and mass.
+  ! Volume is represented by det(J) on shifted mesh, except for the lowest level
+  ! where it is detj_shifted(0) + detj_shifted(1) to mimic the UM equivalent :
+  !  r_rho_levels(2) - r_theta_levels(0)
+  do k = 2, nlayers
+    grid_volume(1,1,k) = real( detj_shifted( map_wth(1) + k ), r_um )
+  end do
+  grid_volume(1,1,1) = real( detj_shifted( map_wth(1) + 1 ) +                  &
+                             detj_shifted( map_wth(1) + 0 ), r_um )
+
+  ! Derive grid airmass as (rho * volume)
+  !  Using wet rho in first instance to replicate UM method used
+  do k = 1, nlayers
+    grid_airmass(1,1,k) = real ( wetrho_in_wth( map_wth(1) + k ), r_um )   &
+                          * grid_volume(1,1,k)
+  end do
+
   ! Determine no. of land points (0 or 1) and set land/sea indicator
 
   frac_land = 0.0_r_um
@@ -2229,6 +2265,9 @@ subroutine aerosol_ukca_code( nlayers,                                         &
         end if
       end if
       environ_flat_real(i) = real(surf_wetness(map_2d(1)), r_um)
+    case(fldname_grid_surf_area)
+      ! Cell Area
+      environ_flat_real(i) = real(grid_surf_area(map_2d(1)), r_um)
     case default
       write( log_scratch_space, '(A,A)' )                                      &
         'Missing required UKCA environment field: ', env_names_flat_real(i)
@@ -2384,6 +2423,12 @@ subroutine aerosol_ukca_code( nlayers,                                         &
       ! Vertical velocity
       environ_fullht_real( :, i ) =                                            &
         real( u3_in_wth( map_wth(1) + 1 : map_wth(1) + nlayers ), r_um )
+    case(fldname_grid_volume)
+      ! Grid cell volume
+      environ_fullht_real( :, i ) =  grid_volume(1,1,:)
+    case(fldname_grid_airmass)
+      ! Grid cell air mass
+      environ_fullht_real( :, i ) =  grid_airmass(1,1,:)
     case default
       write( log_scratch_space, '(A,A)' )                                      &
         'Missing required UKCA environment field: ', env_names_fullht_real(i)
