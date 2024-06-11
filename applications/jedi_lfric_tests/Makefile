@@ -156,20 +156,16 @@ build: ALWAYS
 ##############################################################################
 # Unit tests
 #
-unit-tests/%: export ADDITIONAL_EXTRACTION =                         \
-                     $(CORE_ROOT_DIR)/infrastructure/source               \
-                     $(CORE_ROOT_DIR)/components/driver/source            \
-                     $(CORE_ROOT_DIR)/components/inventory/source         \
-                     $(CORE_ROOT_DIR)/components/science/source/kernel    \
-                     $(CORE_ROOT_DIR)/components/science/source/algorithm \
-                     $(CORE_ROOT_DIR)/components/science/source/psy       \
-                     $(CORE_ROOT_DIR)/components/inventory/source         \
-                     $(APPS_ROOT_DIR)/science/jedi_lfric_interface/source        \
-                     $(CORE_ROOT_DIR)/components/lfric-xios/source        \
-                     $(APPS_ROOT_DIR)/science/gungho/source                       \
-                     $(APPS_ROOT_DIR)/science/linear/source
 unit-tests/%: export BIN_DIR ?= $(PROJECT_DIR)/test
 unit-tests/%: export FFLAGS += -DUNIT_TEST
+unit-tests/%: export IMPORT_PARTS  = $(CORE_ROOT_DIR)/infrastructure \
+                                     $(CORE_ROOT_DIR)/components/driver \
+                                     $(CORE_ROOT_DIR)/components/science \
+                                     $(CORE_ROOT_DIR)/components/lfric-xios \
+                                     $(CORE_ROOT_DIR)/components/inventory \
+                                     $(APPS_ROOT_DIR)/science/jedi_lfric_interface \
+                                     $(APPS_ROOT_DIR)/science/gungho \
+                                     $(APPS_ROOT_DIR)/science/linear
 unit-tests/%: export META_FILE_DIR = rose-meta/jedi_lfric_tests/HEAD
 unit-tests/%: export PROGRAMS = $(PROJECT_NAME)_unit_tests
 unit-tests/%: export PROJECT = $(PROJECT_NAME)
@@ -182,18 +178,16 @@ unit-tests: unit-tests/run
 ##############################################################################
 # Integration tests
 #
-integration-tests/%: export ADDITIONAL_EXTRACTION =                  \
-                            $(CORE_ROOT_DIR)/infrastructure/source        \
-                            $(CORE_ROOT_DIR)/components/driver/source     \
-                            $(CORE_ROOT_DIR)/components/inventory/source  \
-                            $(CORE_ROOT_DIR)/components/science/source    \
-                            $(CORE_ROOT_DIR)/components/inventory/source  \
-                            $(APPS_ROOT_DIR)/science/jedi_lfric_interface/source \
-                            $(CORE_ROOT_DIR)/components/lfric-xios/source \
-                            $(APPS_ROOT_DIR)/science/gungho/source                \
-                            $(APPS_ROOT_DIR)/science/linear/source
 integration-tests/%: export BIN_DIR      ?= $(PROJECT_DIR)/test
 integration-tests/%: export FFLAGS       += -DINT_TEST
+integration-tests/%: export IMPORT_PARTS  = $(CORE_ROOT_DIR)/infrastructure \
+                                            $(CORE_ROOT_DIR)/components/science \
+                                            $(CORE_ROOT_DIR)/components/driver \
+                                            $(CORE_ROOT_DIR)/components/inventory \
+                                            $(CORE_ROOT_DIR)/components/lfric-xios \
+                                            $(APPS_ROOT_DIR)/science/jedi_lfric_interface \
+                                            $(APPS_ROOT_DIR)/science/gungho \
+                                            $(APPS_ROOT_DIR)/science/linear
 integration-tests/%: export META_FILE_DIR = rose-meta/jedi_lfric_tests/HEAD
 integration-tests/%: export PROJECT       = $(PROJECT_NAME)
 integration-tests/%: export SOURCE_DIR    = source

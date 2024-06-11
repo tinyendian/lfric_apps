@@ -67,15 +67,12 @@ document-latex: ALWAYS
 ##############################################################################
 # Unit tests
 #
-unit-tests/%: export ADDITIONAL_EXTRACTION                           \
-                  = $(CORE_ROOT_DIR)/infrastructure/source                \
-                    $(CORE_ROOT_DIR)/components/driver/source             \
-                    $(CORE_ROOT_DIR)/components/science/source            \
-                    $(CORE_ROOT_DIR)/components/inventory/source          \
-                    $(APPS_ROOT_DIR)/science/gungho/source                        \
-                    $(CORE_ROOT_DIR)/components/science/unit-test/support \
-                    $(CORE_ROOT_DIR)/components/lfric-xios/source
+unit-tests/%: export ADDITIONAL_EXTRACTION = \
+                         $(CORE_ROOT_DIR)/components/science/unit-test/support
 unit-tests/%: export BIN_DIR      ?= $(PROJECT_DIR)/test
+unit-tests/%: export IMPORT_PARTS  = $(CORE_ROOT_DIR)/infrastructure \
+                                     $(CORE_ROOT_DIR)/components/science \
+                                     $(APPS_ROOT_DIR)/science/gungho
 unit-tests/%: export META_FILE_DIR = rose-meta/lfric-linear/HEAD
 unit-tests/%: export PROGRAMS      = linear_unit_tests
 unit-tests/%: export PROJECT       = linear
@@ -89,15 +86,14 @@ unit-tests: unit-tests/run
 ##############################################################################
 # Integration tests
 #
-integration-tests/%: export ADDITIONAL_EXTRACTION =              \
-                         $(CORE_ROOT_DIR)/infrastructure/source       \
-                         $(CORE_ROOT_DIR)/components/driver/source    \
-                         $(CORE_ROOT_DIR)/components/science/source   \
-                         $(CORE_ROOT_DIR)/components/inventory/source \
-                         $(APPS_ROOT_DIR)/science/gungho/source               \
-                         $(CORE_ROOT_DIR)/components/lfric-xios/source
 integration-tests/%: export BIN_DIR      ?= $(PROJECT_DIR)/test
 integration-tests/%: export CXX_LINK      = true
+integration-tests/%: export IMPORT_PARTS  = $(CORE_ROOT_DIR)/infrastructure \
+                                            $(CORE_ROOT_DIR)/components/science \
+                                            $(CORE_ROOT_DIR)/components/driver \
+                                            $(CORE_ROOT_DIR)/components/inventory \
+                                            $(CORE_ROOT_DIR)/components/lfric-xios \
+                                            $(APPS_ROOT_DIR)/science/gungho
 integration-tests/%: export META_FILE_DIR = rose-meta/lfric-linear/HEAD
 integration-tests/%: export PROJECT       = linear
 integration-tests/%: export SOURCE_DIR    = source

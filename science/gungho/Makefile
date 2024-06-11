@@ -89,14 +89,15 @@ document-latex: ALWAYS
 ###############################################################################
 # Unit tests
 #
-unit-tests/%: export ADDITIONAL_EXTRACTION = $(CORE_ROOT_DIR)/infrastructure/source \
-                                             $(CORE_ROOT_DIR)/components/lfric-xios/source \
-                                             $(CORE_ROOT_DIR)/components/inventory \
-                                             $(CORE_ROOT_DIR)/components/science/source \
-                                             $(CORE_ROOT_DIR)/components/science/unit-test/support
+unit-tests/%: export ADDITIONAL_EXTRACTION = \
+                          $(CORE_ROOT_DIR)/components/science/unit-test/support
 unit-tests/%: export BIN_DIR ?= $(PROJECT_DIR)/test
 unit-tests/%: export CXX_LINK = TRUE
 unit-tests/%: export EXTERNAL_STATIC_LIBRARIES += pfunit
+unit-tests/%: export IMPORT_PARTS  = $(CORE_ROOT_DIR)/infrastructure \
+                                     $(CORE_ROOT_DIR)/components/science \
+                                     $(CORE_ROOT_DIR)/components/lfric-xios \
+                                     $(CORE_ROOT_DIR)/components/inventory
 unit-tests/%: export META_FILE_DIR = rose-meta/lfric-gungho/HEAD
 unit-tests/%: export PRE_PROCESS_MACROS = 'UNIT_TEST=TRUE'
 unit-tests/%: export PROGRAMS = gungho_unit_tests
@@ -109,11 +110,14 @@ unit-tests: unit-tests/run
 ###############################################################################
 # Integration tests
 #
-integration-tests/%: export ADDITIONAL_EXTRACTION = $(CORE_ROOT_DIR)/infrastructure/source \
-                                                    $(CORE_ROOT_DIR)/components/driver/source \
-                                                    $(CORE_ROOT_DIR)/components/inventory \
-                                                    $(CORE_ROOT_DIR)/components/science/source
+#integration-tests/%: export ADDITIONAL_EXTRACTION = /source \
+#                                                    $(CORE_ROOT_DIR)/components/driver/source \
+#                                                    $(CORE_ROOT_DIR)/components/inventory \
+#                                                    /source
 integration-tests/%: export BIN_DIR      ?= $(PROJECT_DIR)/test
+integration-tests/%: export IMPORT_PARTS  = $(CORE_ROOT_DIR)/infrastructure \
+                                            $(CORE_ROOT_DIR)/components/science \
+                                            $(CORE_ROOT_DIR)/components/driver
 integration-tests/%: export META_FILE_DIR = rose-meta/lfric-gungho/HEAD
 integration-tests/%: export PROJECT       = gungho
 integration-tests/%: export SOURCE_DIR    = source

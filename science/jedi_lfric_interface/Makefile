@@ -77,15 +77,14 @@ document-api: api-documentation
 ##############################################################################
 # Unit tests
 #
-unit-tests/%: export ADDITIONAL_EXTRACTION = $(CORE_ROOT_DIR)/infrastructure/source \
-                                             $(CORE_ROOT_DIR)/components/science/source \
-                                             $(CORE_ROOT_DIR)/components/driver/source \
-                                             $(CORE_ROOT_DIR)/components/inventory/source \
-                                             $(CORE_ROOT_DIR)/components/lfric-xios/source \
-                                             $(APPS_ROOT_DIR)/science/gungho/source
 unit-tests/%: export BIN_DIR ?= $(PROJECT_DIR)/test
 unit-tests/%: export CXX_LINK = YES
 unit-tests/%: export FFLAGS += -D UNIT_TEST
+unit-tests/%: export IMPORT_PARTS = $(CORE_ROOT_DIR)/infrastructure \
+                                    $(CORE_ROOT_DIR)/components/science \
+                                    $(CORE_ROOT_DIR)/components/lfric-xios \
+                                    $(CORE_ROOT_DIR)/components/driver \
+                                    $(APPS_ROOT_DIR)/science/gungho
 unit-tests/%: export META_FILE_DIR = rose-meta/jedi_lfric_interface/HEAD
 unit-tests/%: export PROGRAMS = jedi_lfric_unit_tests
 unit-tests/%: export PROJECT = jedi_lfric
@@ -98,14 +97,11 @@ unit-tests: unit-tests/run
 ##############################################################################
 # Integration tests
 #
-integration-tests/%: export ADDITIONAL_EXTRACTION = $(CORE_ROOT_DIR)/infrastructure/source \
-                                                    $(CORE_ROOT_DIR)/components/science/source \
-                                                    $(CORE_ROOT_DIR)/components/driver/source \
-                                                    $(CORE_ROOT_DIR)/components/inventory/source \
-                                                    $(APPS_ROOT_DIR)/science/gungho/source
-
 integration-tests/%: export BIN_DIR      ?= $(PROJECT_DIR)/test
 integration-tests/%: export FFLAGS       += -DINT_TEST
+integration-tests/%: export IMPORT_PARTS  = $(CORE_ROOT_DIR)/infrastructure \
+                                            $(CORE_ROOT_DIR)/components/science \
+                                            $(APPS_ROOT_DIR)/science/gungho
 integration-tests/%: export META_FILE_DIR = rose-meta/jedi_lfric_interface/HEAD
 integration-tests/%: export PROGRAMS = jedi_lfric_integration_tests
 integration-tests/%: export PROJECT       = $(PROJECT_NAME)

@@ -68,15 +68,15 @@ document-api: api-documentation
 # Unit tests
 #
 .PHONY: unit-tests
-unit-tests/%: export ADDITIONAL_EXTRACTION = $(CORE_ROOT_DIR)/infrastructure/source \
-                                             $(CORE_ROOT_DIR)/components/science/source \
-                                             $(APPS_ROOT_DIR)/science/jules_interface/source/kernel \
-                                             $(CORE_ROOT_DIR)/components/science/unit-test/support \
-                                             $(APPS_ROOT_DIR)/science/gungho/source/diagnostics \
-                                             $(APPS_ROOT_DIR)/science/constants/source
+unit-tests/%: export ADDITIONAL_EXTRACTION = $(CORE_ROOT_DIR)/components/science/unit-test/support
 unit-tests/%: export BIN_DIR ?= $(PROJECT_DIR)/test
 unit-tests/%: export EXTERNAL_STATIC_LIBRARIES += pfunit
 unit-tests/%: export FFLAG_GROUPS = -D UNIT_TEST
+unit-tests/%: export IMPORT_PARTS = $(CORE_ROOT_DIR)/infrastructure \
+                                    $(CORE_ROOT_DIR)/components/science \
+                                    $(APPS_ROOT_DIR)/science/jules_interface \
+                                    $(APPS_ROOT_DIR)/science/gungho \
+                                    $(APPS_ROOT_DIR)/science/socrates_interface
 unit-tests/%: export META_FILE_DIR = $(PROJECT_DIR)/rose-meta/$(PROJECT_NAME)/$(META_VN)
 unit-tests/%: export PROGRAMS = um_physics_interface_unit_tests
 unit-tests/%: export PROJECT = um_physics_interface

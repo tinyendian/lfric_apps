@@ -60,6 +60,21 @@
             LDFLAGS={{LDFLAGS}}
 
 
+{% elif task.startswith("template") %}
+
+    [[{{task}}]]
+        inherit = BUILD_{{task_ns.application|upper}}_{{task_ns.platform|upper}}, \
+                  LFRICINPUTS_BASE, \
+                  {{SITE|upper}}_{{task_ns.platform|upper}}_{{task_ns.compiler|upper}}, \
+                  {{SITE|upper}}_{{task_ns.platform|upper}}_1_TASKS, \
+                  {{task_ns.platform|upper}}_LFRICINPUTS
+        [[[environment]]]
+            ROSE_TASK_APP = template
+            BUILD_NAME = fcm_make_{{build_string}}
+            LFRIC_APPS_DIR = $CYLC_WORKFLOW_SHARE_DIR/fcm_make_{{build_string}}/extract/lfric_apps
+            LFRIC_CORE_DIR = $CYLC_WORKFLOW_SHARE_DIR/fcm_make_{{build_string}}/extract/lfric_core
+
+
 {% elif task.startswith("configurate") %}
 
     [[{{task}}]]

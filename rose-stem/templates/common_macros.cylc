@@ -157,6 +157,7 @@
         "phystest",
         "fcm_make",
         "fcm_make2",
+        "template",
         "configurate",
         "psyclone",
         "generate_weights",

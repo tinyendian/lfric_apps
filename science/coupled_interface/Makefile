@@ -86,14 +86,8 @@ document-api: api-documentation
 ##############################################################################
 # Unit tests
 #
-unit-tests/%: export ADDITIONAL_EXTRACTION = $(CORE_ROOT_DIR)/infrastructure/source \
-                                             $(CORE_ROOT_DIR)/components/driver/source \
-                                             $(CORE_ROOT_DIR)/components/science/source \
-                                             $(CORE_ROOT_DIR)/components/lfric-xios/source \
-                                             $(APPS_ROOT_DIR)/applications/lfric_atm/source/constants \
-                                             $(APPS_ROOT_DIR)/science/gungho/source/kernel/support \
-                                             $(CORE_ROOT_DIR)/components/science/unit-test/support
-
+unit-tests/%: export ADDITIONAL_EXTRACTION = \
+                     $(CORE_ROOT_DIR)/components/science/unit-test/support
 unit-tests/%: export BIN_DIR ?= $(PROJECT_DIR)/test
 #
 # It should not be necessary to explicitly link the pfunit library as it is
@@ -102,6 +96,8 @@ unit-tests/%: export BIN_DIR ?= $(PROJECT_DIR)/test
 # the current ticket needs to go on sooner rather than later.
 #
 unit-tests/%: export EXTERNAL_STATIC_LIBRARIES = pfunit
+unit-tests/%: export IMPORT_PARTS = $(CORE_ROOT_DIR)/infrastructure \
+                                    $(CORE_ROOT_DIR)/components/science
 unit-tests/%: export META_FILE_DIR = $(PROJECT_DIR)/rose-meta/$(PROJECT_NAME)/$(META_VN)
 unit-tests/%: export PROGRAMS = $(PROJECT_NAME)_unit_tests
 unit-tests/%: export PROJECT = $(PROJECT_NAME)
