@@ -47,7 +47,7 @@ module swe_timestep_alg_mod
   use sci_field_vector_mod,           only: field_vector_type
 
   ! Algorithms
-  use sci_mass_matrix_solver_alg_mod, only: mass_matrix_solver_alg
+  use mass_matrix_solver_alg_mod,     only: mass_matrix_solver_alg
   use sci_null_preconditioner_alg_mod, &
                                       only: null_preconditioner_type
   use swe_geopot_operator_alg_mod,    only: swe_geopot_operator_type

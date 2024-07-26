@@ -30,8 +30,7 @@ module swe_predictors_alg_mod
   ! Algorithms and Kernels
   use dg_matrix_vector_kernel_mod, &
                                   only: dg_matrix_vector_kernel_type
-  use sci_mass_matrix_solver_alg_mod, &
-                                  only: mass_matrix_solver_alg
+  use mass_matrix_solver_alg_mod, only: mass_matrix_solver_alg
 
   implicit none
 

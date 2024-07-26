@@ -49,8 +49,7 @@ module semi_implicit_solver_alg_mod
   use pressure_operator_alg_mod,          only: pressure_operator_type
   use pressure_precon_alg_mod,            only: pressure_preconditioner_type
   use pressure_diag_precon_alg_mod,       only: pressure_diag_preconditioner_type
-  use sci_multigrid_preconditioner_alg_mod, &
-                                          only: multigrid_preconditioner_type
+  use multigrid_preconditioner_alg_mod,   only: multigrid_preconditioner_type
   use sci_null_preconditioner_alg_mod,    only: null_preconditioner_type
 
   ! preconditioner and solver
@@ -430,8 +429,7 @@ contains
     use r_solver_field_mod,            only: r_solver_field_type
     use timestepping_config_mod,       only: dt, tau_r
     use sci_enforce_bc_kernel_mod,     only: enforce_bc_kernel_type
-    use sci_mass_matrix_solver_alg_mod, &
-                                       only: mass_matrix_solver_alg
+    use mass_matrix_solver_alg_mod,    only: mass_matrix_solver_alg
     use sci_psykal_light_mod,          only: invoke_copy_to_rdef, &
                                              invoke_copy_to_rsolver, &
                                              invoke_inc_rdefX_plus_rsolverY

@@ -46,7 +46,7 @@ module gravity_wave_alg_mod
   use gw_pressure_precon_alg_mod,     only: gw_pressure_preconditioner_type
   use sci_null_preconditioner_alg_mod, &
                                       only: null_preconditioner_type
-  use sci_multigrid_preconditioner_alg_mod, &
+  use multigrid_preconditioner_alg_mod, &
                                       only: multigrid_preconditioner_type
 
   ! Preconditioner and solver

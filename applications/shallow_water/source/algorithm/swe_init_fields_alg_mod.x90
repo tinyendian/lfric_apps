@@ -42,7 +42,7 @@ module swe_init_fields_alg_mod
   use initial_swe_tracer_kernel_mod,      only: initial_swe_tracer_kernel_type
   use initial_swe_u_kernel_mod,           only: initial_swe_u_kernel_type
   use initial_vorticity_v2_kernel_mod,    only: initial_vorticity_v2_kernel_type
-  use sci_mass_matrix_solver_alg_mod,     only: mass_matrix_solver_alg
+  use mass_matrix_solver_alg_mod,         only: mass_matrix_solver_alg
   use strong_curl_kernel_mod,             only: strong_curl_kernel_type
   use w2_to_w1_projection_kernel_mod,     only: w2_to_w1_projection_kernel_type
 

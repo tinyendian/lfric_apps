@@ -107,7 +107,7 @@ module semi_implicit_timestep_alg_mod
                                         semi_implicit_solver_alg_final
   use derive_exner_from_eos_alg_mod, &
                                   only: derive_exner_from_eos
-  use sci_mass_matrix_solver_alg_mod, &
+  use mass_matrix_solver_alg_mod, &
                                   only: mass_matrix_solver_alg
   use moist_dyn_factors_alg_mod,  only: moist_dyn_factors_alg
   use update_prognostic_scalars_alg_mod, &

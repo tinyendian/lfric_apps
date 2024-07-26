@@ -24,7 +24,7 @@ module diagnostics_io_mod
   use fs_continuity_mod,             only: Wtheta, W2H
   use geometric_constants_mod,       only: get_coordinates, &
                                            get_panel_id
-  use sci_project_output_mod,        only: project_output
+  use project_output_mod,            only: project_output
   use io_mod,                        only: ts_fname, &
                                            nodal_write_field
   use lfric_xios_write_mod,          only: write_field_generic

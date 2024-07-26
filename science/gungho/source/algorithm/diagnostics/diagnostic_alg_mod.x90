@@ -28,7 +28,7 @@ module diagnostic_alg_mod
                                            get_face_selector_ew, &
                                            get_face_selector_ns
   use norm_alg_mod,                  only: l2_norm_alg, rel_l2_error_alg
-  use sci_project_output_mod,        only: project_output
+  use project_output_mod,            only: project_output
   use log_mod,                       only: log_event,         &
                                            log_scratch_space, &
                                            LOG_LEVEL_INFO,    &
