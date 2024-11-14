@@ -85,9 +85,9 @@ contains
   !> @param[in] ndf_w2 Number of degrees of freedom per cell for W2
   !> @param[in] w2_basis_face W2 basis functions evaluated at Gaussian
   !!                          quadrature points on horizontal faces
-  !> @param[in] ndf_wt Number of degrees of freedom per cell for Wtheta
-  !> @param[in] undf_wt Number of unique degrees of freedom for Wtheta
-  !> @param[in] map_wt Dofmap for Wtheta
+  !> @param[in] ndf_wtheta Number of degrees of freedom per cell for Wtheta
+  !> @param[in] undf_wtheta Number of unique degrees of freedom for Wtheta
+  !> @param[in] map_wtheta Dofmap for Wtheta
   !> @param[in] wtheta_basis_face Wtheta basis functions evaluated at Gaussian
   !!                              quadrature points on horizontal faces
   !> @param[in] ndf_w3 Number of degrees of freedom per cell for W3
@@ -112,8 +112,8 @@ contains
                                            moist_dyn_factor,                &
                                            scalar,                          &
                                            ndf_w2, w2_basis_face,           &
-                                           ndf_wt, undf_wt, map_wt,         &
-                                           wt_basis_face,                   &
+                                           ndf_wtheta, undf_wtheta,         &
+                                           map_wtheta, wtheta_basis_face,   &
                                            ndf_w3, undf_w3, map_w3,         &
                                            w3_basis_face,                   &
                                            nfaces_re_h,                     &
@@ -130,24 +130,25 @@ contains
     integer(kind=i_def), intent(in) :: nlayers
     integer(kind=i_def), intent(in) :: nfaces_qr, nqp_f
     integer(kind=i_def), intent(in) :: ncell_3d
-    integer(kind=i_def), intent(in) :: undf_w3, ndf_w3, ndf_w2, ndf_wt, undf_wt
+    integer(kind=i_def), intent(in) :: undf_w3, ndf_w3, ndf_w2
+    integer(kind=i_def), intent(in) :: ndf_wtheta, undf_wtheta
     integer(kind=i_def), intent(in) :: nfaces_re_h
 
     integer(kind=i_def), intent(in) :: stencil_w3_size
     integer(kind=i_def), dimension(ndf_w3, stencil_w3_size), intent(in) :: stencil_w3_map
 
-    integer(kind=i_def), dimension(ndf_w3),     intent(in) :: map_w3
-    integer(kind=i_def), dimension(ndf_wt),     intent(in) :: map_wt
+    integer(kind=i_def), dimension(ndf_w3),         intent(in) :: map_w3
+    integer(kind=i_def), dimension(ndf_wtheta),     intent(in) :: map_wtheta
 
-    real(kind=r_def), dimension(3,ndf_w2,nqp_f,nfaces_qr), intent(in) :: w2_basis_face
-    real(kind=r_def), dimension(1,ndf_w3,nqp_f,nfaces_qr), intent(in) :: w3_basis_face
-    real(kind=r_def), dimension(1,ndf_wt,nqp_f,nfaces_qr), intent(in) :: wt_basis_face
-    real(kind=r_def), dimension(nqp_f,nfaces_qr),          intent(in) :: wqp_f
+    real(kind=r_def), dimension(3,ndf_w2,nqp_f,nfaces_qr),     intent(in) :: w2_basis_face
+    real(kind=r_def), dimension(1,ndf_w3,nqp_f,nfaces_qr),     intent(in) :: w3_basis_face
+    real(kind=r_def), dimension(1,ndf_wtheta,nqp_f,nfaces_qr), intent(in) :: wtheta_basis_face
+    real(kind=r_def), dimension(nqp_f,nfaces_qr),              intent(in) :: wqp_f
 
-    real(kind=r_solver), dimension(ndf_w2,ndf_wt,ncell_3d), intent(inout) :: projection
-    real(kind=r_solver), dimension(undf_w3),                intent(in)    :: exner
-    real(kind=r_solver), dimension(undf_wt),                intent(in)    :: moist_dyn_factor
-    real(kind=r_solver),                                    intent(in)    :: scalar
+    real(kind=r_solver), dimension(ndf_w2,ndf_wtheta,ncell_3d), intent(inout) :: projection
+    real(kind=r_solver), dimension(undf_w3),                    intent(in)    :: exner
+    real(kind=r_solver), dimension(undf_wtheta),                intent(in)    :: moist_dyn_factor
+    real(kind=r_solver),                                        intent(in)    :: scalar
 
     integer(kind=i_def), intent(in) :: adjacent_face(:)
 
@@ -163,10 +164,10 @@ contains
                                               exner_next_at_fquad, &
                                               exner_av
 
-    real(kind=r_solver), dimension(3,ndf_w2,nqp_f,nfaces_qr) :: rsol_w2_basis_face
-    real(kind=r_solver), dimension(1,ndf_w3,nqp_f,nfaces_qr) :: rsol_w3_basis_face
-    real(kind=r_solver), dimension(1,ndf_wt,nqp_f,nfaces_qr) :: rsol_wt_basis_face
-    real(kind=r_solver), dimension(nqp_f,nfaces_qr)          :: rsol_wqp_f
+    real(kind=r_solver), dimension(3,ndf_w2,nqp_f,nfaces_qr)     :: rsol_w2_basis_face
+    real(kind=r_solver), dimension(1,ndf_w3,nqp_f,nfaces_qr)     :: rsol_w3_basis_face
+    real(kind=r_solver), dimension(1,ndf_wtheta,nqp_f,nfaces_qr) :: rsol_wtheta_basis_face
+    real(kind=r_solver), dimension(nqp_f,nfaces_qr)              :: rsol_wqp_f
 
     ! If we're near the edge of the regional domain then the
     ! stencil size will be less that 5 so don't do anything here
@@ -175,7 +176,7 @@ contains
 
     rsol_w2_basis_face = real(w2_basis_face, r_solver)
     rsol_w3_basis_face = real(w3_basis_face, r_solver)
-    rsol_wt_basis_face = real(wt_basis_face, r_solver)
+    rsol_wtheta_basis_face = real(wtheta_basis_face, r_solver)
     rsol_wqp_f = real(wqp_f, r_solver)
 
 
@@ -195,14 +196,15 @@ contains
           exner_at_fquad      = 0.0_r_solver
           exner_next_at_fquad = 0.0_r_solver
           do df = 1, ndf_w3
-            exner_at_fquad      = exner_at_fquad + exner_e(df)*rsol_w3_basis_face(1,df,qp,face)
-            exner_next_at_fquad = exner_next_at_fquad + exner_next_e(df)*rsol_w3_basis_face(1,df,qp,face_next)
+            exner_at_fquad      = exner_at_fquad + (exner_e(df)*rsol_w3_basis_face(1,df,qp,face))
+            exner_next_at_fquad = exner_next_at_fquad + (exner_next_e(df)*rsol_w3_basis_face(1,df,qp,face_next))
           end do
           exner_av = 0.5_r_solver*(exner_at_fquad + exner_next_at_fquad)
 
-          do df0 = 1, ndf_wt
+          do df0 = 1, ndf_wtheta
             normal = real(outward_normals(:,face), r_solver) &
-                    *moist_dyn_factor(map_wt(df0)+k)*rsol_wt_basis_face(1,df0,qp,face)
+                    *moist_dyn_factor(map_wtheta(df0)+k) &
+                    *rsol_wtheta_basis_face(1,df0,qp,face)
             do df2 = 1, ndf_w2
               v  = rsol_w2_basis_face(:,df2,qp,face)
 
