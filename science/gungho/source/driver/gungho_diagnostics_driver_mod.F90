@@ -85,12 +85,12 @@ contains
     logical,             intent(in)             :: nodal_output_on_w3
 
     type( field_collection_type ), pointer :: prognostic_fields => null()
-    type( field_collection_type ), pointer :: con_tracer_last_outer => null()
+    type( field_collection_type ), pointer :: con_tracer_last_outer
     type( field_collection_type ), pointer :: lbc_fields => null()
     type( field_collection_type ), pointer :: moisture_fields => null()
     type( field_type ),            pointer :: mr(:) => null()
     type( field_type ),            pointer :: moist_dyn(:) => null()
-    type( field_collection_type ), pointer :: derived_fields => null()
+    type( field_collection_type ), pointer :: derived_fields
 
     type( field_type), pointer :: theta => null()
     type( field_type), pointer :: u => null()
@@ -146,11 +146,11 @@ contains
     mr => mr_array%bundle
     call moisture_fields%get_field("moist_dyn", moist_dyn_array)
     moist_dyn => moist_dyn_array%bundle
-    derived_fields => modeldb%model_data%derived_fields
+    derived_fields => modeldb%fields%get_field_collection("derived_fields")
     panel_id => get_panel_id(mesh%get_id())
     height_w3 => get_height(W3, mesh%get_id())
     height_wth => get_height(Wtheta, mesh%get_id())
-    con_tracer_last_outer =>  modeldb%model_data%con_tracer_last_outer
+    con_tracer_last_outer =>  modeldb%fields%get_field_collection("con_tracer_last_outer")
 
     ! Can't just iterate through the prognostic/diagnostic collections as
     ! some fields are scalars and some fields are vectors, so explicitly

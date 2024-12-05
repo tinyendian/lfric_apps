@@ -73,23 +73,23 @@ module tl_test_semi_imp_alg_mod
     type( field_collection_type ), pointer :: diagnostic_fields => null()
     type( field_type ),            pointer :: mr(:) => null()
     type( field_type ),            pointer :: ls_mr(:) => null()
-    type( field_collection_type ), pointer :: adv_tracer_all_outer => null()
-    type( field_collection_type ), pointer :: adv_tracer_last_outer => null()
-    type( field_collection_type ), pointer :: con_tracer_all_outer => null()
-    type( field_collection_type ), pointer :: con_tracer_last_outer => null()
-    type( field_collection_type ), pointer :: derived_fields => null()
+    type( field_collection_type ), pointer :: adv_tracer_all_outer
+    type( field_collection_type ), pointer :: adv_tracer_last_outer
+    type( field_collection_type ), pointer :: con_tracer_all_outer
+    type( field_collection_type ), pointer :: con_tracer_last_outer
+    type( field_collection_type ), pointer :: derived_fields
     type( field_collection_type ), pointer :: radiation_fields => null()
-    type( field_collection_type ), pointer :: microphysics_fields => null()
-    type( field_collection_type ), pointer :: electric_fields => null()
-    type( field_collection_type ), pointer :: orography_fields => null()
+    type( field_collection_type ), pointer :: microphysics_fields
+    type( field_collection_type ), pointer :: electric_fields
+    type( field_collection_type ), pointer :: orography_fields
     type( field_collection_type ), pointer :: turbulence_fields
     type( field_collection_type ), pointer :: convection_fields
-    type( field_collection_type ), pointer :: cloud_fields => null()
+    type( field_collection_type ), pointer :: cloud_fields
     type( field_collection_type ), pointer :: surface_fields
     type( field_collection_type ), pointer :: soil_fields
     type( field_collection_type ), pointer :: snow_fields
     type( field_collection_type ), pointer :: chemistry_fields => null()
-    type( field_collection_type ), pointer :: aerosol_fields => null()
+    type( field_collection_type ), pointer :: aerosol_fields
     type( field_collection_type ), pointer :: stph_fields
     type( field_collection_type ), pointer :: lbc_fields => null()
 
@@ -154,23 +154,23 @@ module tl_test_semi_imp_alg_mod
     call moisture_fields%get_field("ls_moist_dyn", ls_moist_dyn_array)
     ls_mr => ls_mr_array%bundle
     ls_moist_dyn => ls_moist_dyn_array%bundle
-    adv_tracer_all_outer => modeldb%model_data%adv_tracer_all_outer
-    adv_tracer_last_outer => modeldb%model_data%adv_tracer_last_outer
-    con_tracer_all_outer => modeldb%model_data%con_tracer_all_outer
-    con_tracer_last_outer => modeldb%model_data%con_tracer_last_outer
-    derived_fields => modeldb%model_data%derived_fields
+    adv_tracer_all_outer => modeldb%fields%get_field_collection("adv_tracer_all_outer")
+    adv_tracer_last_outer => modeldb%fields%get_field_collection("adv_tracer_last_outer")
+    con_tracer_all_outer => modeldb%fields%get_field_collection("con_tracer_all_outer")
+    con_tracer_last_outer => modeldb%fields%get_field_collection("con_tracer_last_outer")
+    derived_fields => modeldb%fields%get_field_collection("derived_fields")
     radiation_fields => modeldb%model_data%radiation_fields
-    microphysics_fields => modeldb%model_data%microphysics_fields
-    electric_fields => modeldb%model_data%electric_fields
-    orography_fields => modeldb%model_data%orography_fields
+    microphysics_fields => modeldb%fields%get_field_collection("microphysics_fields")
+    electric_fields => modeldb%fields%get_field_collection("electric_fields")
+    orography_fields => modeldb%fields%get_field_collection("orography_fields")
     turbulence_fields => modeldb%fields%get_field_collection("turbulence_fields")
     convection_fields => modeldb%fields%get_field_collection("convection_fields")
-    cloud_fields => modeldb%model_data%cloud_fields
+    cloud_fields => modeldb%fields%get_field_collection("cloud_fields")
     surface_fields => modeldb%fields%get_field_collection("surface_fields")
     soil_fields => modeldb%fields%get_field_collection("soil_fields")
     snow_fields => modeldb%fields%get_field_collection("snow_fields")
     chemistry_fields => modeldb%fields%get_field_collection("chemistry_fields")
-    aerosol_fields => modeldb%model_data%aerosol_fields
+    aerosol_fields => modeldb%fields%get_field_collection("aerosol_fields")
     stph_fields => modeldb%fields%get_field_collection("stph_fields")
     lbc_fields => modeldb%model_data%lbc_fields
 

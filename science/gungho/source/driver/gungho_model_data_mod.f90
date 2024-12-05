@@ -22,29 +22,10 @@ module gungho_model_data_mod
 
     !> @name Fields needed to time-step the model.
     !> @{
-
-    !> Tracers that should be advected
-    type( field_collection_type ), public   :: adv_tracer_last_outer
-    type( field_collection_type ), public   :: adv_tracer_all_outer
-    !> Second group of tracers that should be advected
-    type( field_collection_type ), public   :: con_tracer_last_outer
-    type( field_collection_type ), public   :: con_tracer_all_outer
-    !> FD fields derived from FE fields for use in physics time-stepping schemes
-    type( field_collection_type ), public   :: derived_fields
     !> LBC fields - lateral boundary conditions to run a limited area model
     type( field_collection_type ), public   :: lbc_fields
     !> Fields owned by the radiation scheme
     type( field_collection_type ), public   :: radiation_fields
-    !> Fields owned by the microphysics scheme
-    type( field_collection_type ), public   :: microphysics_fields
-    !> Fields owned by the electric scheme
-    type( field_collection_type ), public   :: electric_fields
-    !> Fields owned by the orographic drag schemes
-    type( field_collection_type ), public   :: orography_fields
-    !> Fields owned by the cloud schemes
-    type( field_collection_type ), public   :: cloud_fields
-    !> Fields owned by the aerosol schemes
-    type( field_collection_type ), public   :: aerosol_fields
     !> @}
 
     !> FD fields used to read initial conditions from LFRic-Input files

@@ -323,6 +323,16 @@ subroutine create_model_data( modeldb,      &
     type(field_collection_type), pointer :: convection_fields
     type(field_collection_type), pointer :: stph_fields
     type(field_collection_type), pointer :: ancil_fields
+    type(field_collection_type), pointer :: electric_fields
+    type(field_collection_type), pointer :: orography_fields
+    type(field_collection_type), pointer :: adv_tracer_all_outer
+    type(field_collection_type), pointer :: adv_tracer_last_outer
+    type(field_collection_type), pointer :: con_tracer_all_outer
+    type(field_collection_type), pointer :: con_tracer_last_outer
+    type(field_collection_type), pointer :: microphysics_fields
+    type(field_collection_type), pointer :: derived_fields
+    type(field_collection_type), pointer :: cloud_fields
+    type(field_collection_type), pointer :: aerosol_fields
 
     type(gungho_time_axes_type), pointer :: model_axes
 
@@ -402,27 +412,47 @@ subroutine create_model_data( modeldb,      &
     convection_fields => modeldb%fields%get_field_collection("convection_fields")
     stph_fields => modeldb%fields%get_field_collection("stph_fields")
     ancil_fields => modeldb%fields%get_field_collection("ancil_fields")
+    call modeldb%fields%add_empty_field_collection("electric_fields", table_len = 100)
+    electric_fields => modeldb%fields%get_field_collection("electric_fields")
+    call modeldb%fields%add_empty_field_collection("orography_fields", table_len = 100)
+    orography_fields => modeldb%fields%get_field_collection("orography_fields")
+    call modeldb%fields%add_empty_field_collection("adv_tracer_all_outer", table_len = 100)
+    adv_tracer_all_outer => modeldb%fields%get_field_collection("adv_tracer_all_outer")
+    call modeldb%fields%add_empty_field_collection("adv_tracer_last_outer", table_len = 100)
+    adv_tracer_last_outer => modeldb%fields%get_field_collection("adv_tracer_last_outer")
+    call modeldb%fields%add_empty_field_collection("con_tracer_all_outer", table_len = 100)
+    con_tracer_all_outer => modeldb%fields%get_field_collection("con_tracer_all_outer")
+    call modeldb%fields%add_empty_field_collection("con_tracer_last_outer", table_len = 100)
+    con_tracer_last_outer => modeldb%fields%get_field_collection("con_tracer_last_outer")
+    call modeldb%fields%add_empty_field_collection("microphysics_fields", table_len = 100)
+    microphysics_fields => modeldb%fields%get_field_collection("microphysics_fields")
+    call modeldb%fields%add_empty_field_collection("derived_fields", table_len = 100)
+    derived_fields => modeldb%fields%get_field_collection("derived_fields")
+    call modeldb%fields%add_empty_field_collection("cloud_fields", table_len = 100)
+    cloud_fields => modeldb%fields%get_field_collection("cloud_fields")
+    call modeldb%fields%add_empty_field_collection("aerosol_fields", table_len = 100)
+    aerosol_fields => modeldb%fields%get_field_collection("aerosol_fields")
 
     call field_mapper%init( depository,                               &
                             moisture_fields,                          &
                             prognostic_fields,                        &
-                            modeldb%model_data%adv_tracer_all_outer,  &
-                            modeldb%model_data%adv_tracer_last_outer, &
-                            modeldb%model_data%con_tracer_all_outer,  &
-                            modeldb%model_data%con_tracer_last_outer, &
-                            modeldb%model_data%derived_fields,        &
+                            adv_tracer_all_outer,                     &
+                            adv_tracer_last_outer,                    &
+                            con_tracer_all_outer,                     &
+                            con_tracer_last_outer,                    &
+                            derived_fields,                           &
                             modeldb%model_data%radiation_fields,      &
-                            modeldb%model_data%microphysics_fields,   &
-                            modeldb%model_data%electric_fields,       &
-                            modeldb%model_data%orography_fields,      &
+                            microphysics_fields,                      &
+                            electric_fields,                          &
+                            orography_fields,                         &
                             turbulence_fields,                        &
                             convection_fields,                        &
-                            modeldb%model_data%cloud_fields,          &
+                            cloud_fields,                             &
                             surface_fields,                           &
                             soil_fields,                              &
                             snow_fields,                              &
                             chemistry_fields,                         &
-                            modeldb%model_data%aerosol_fields,        &
+                            aerosol_fields,                           &
                             stph_fields,                              &
                             modeldb%model_data%lbc_fields,            &
                             model_axes )
@@ -524,6 +554,14 @@ subroutine create_model_data( modeldb,      &
     type(field_collection_type), pointer :: convection_fields
     type(field_collection_type), pointer :: stph_fields
     type(field_collection_type), pointer :: ancil_fields
+    type(field_collection_type), pointer :: electric_fields
+    type(field_collection_type), pointer :: orography_fields
+    type(field_collection_type), pointer :: con_tracer_last_outer
+    type(field_collection_type), pointer :: microphysics_fields
+    type(field_collection_type), pointer :: derived_fields
+    type(field_collection_type), pointer :: cloud_fields
+    type(field_collection_type), pointer :: aerosol_fields
+
 
     type(gungho_time_axes_type), pointer :: model_axes
 
@@ -541,6 +579,7 @@ subroutine create_model_data( modeldb,      &
 #endif
 
     depository => modeldb%fields%get_field_collection("depository")
+    electric_fields => modeldb%fields%get_field_collection("electric_fields")
     prognostic_fields => modeldb%fields%get_field_collection("prognostic_fields")
 
     turbulence_fields => modeldb%fields%get_field_collection("turbulence_fields")
@@ -551,6 +590,12 @@ subroutine create_model_data( modeldb,      &
     convection_fields => modeldb%fields%get_field_collection("convection_fields")
     stph_fields => modeldb%fields%get_field_collection("stph_fields")
     ancil_fields => modeldb%fields%get_field_collection("ancil_fields")
+    orography_fields => modeldb%fields%get_field_collection("orography_fields")
+    con_tracer_last_outer => modeldb%fields%get_field_collection("con_tracer_last_outer")
+    microphysics_fields => modeldb%fields%get_field_collection("microphysics_fields")
+    derived_fields => modeldb%fields%get_field_collection("derived_fields")
+    cloud_fields => modeldb%fields%get_field_collection("cloud_fields")
+    aerosol_fields => modeldb%fields%get_field_collection("aerosol_fields")
 
     ! Get model_axes out of modeldb
     model_axes => get_time_axes_from_collection(modeldb%values, "model_axes" )
@@ -564,17 +609,17 @@ subroutine create_model_data( modeldb,      &
     ! them below if need be
     if (use_physics) then
           call init_physics_prognostics_alg( modeldb%model_data%radiation_fields,    &
-                                             modeldb%model_data%microphysics_fields, &
-                                             modeldb%model_data%electric_fields,     &
-                                             modeldb%model_data%orography_fields,    &
+                                             microphysics_fields,                    &
+                                             electric_fields,                        &
+                                             orography_fields,                       &
                                              turbulence_fields,                      &
                                              convection_fields,                      &
-                                             modeldb%model_data%cloud_fields,        &
+                                             cloud_fields,                           &
                                              surface_fields,                         &
                                              soil_fields,                            &
                                              snow_fields,                            &
                                              chemistry_fields,                       &
-                                             modeldb%model_data%aerosol_fields,      &
+                                             aerosol_fields,                         &
                                              stph_fields)
 
     end if
@@ -582,7 +627,7 @@ subroutine create_model_data( modeldb,      &
     if ( transport_ageofair ) then
       ! Age-of-air needs initialising to zero in case this is a new run
       ! If picking up from a checkpoint, this will be overwritten
-      call modeldb%model_data%con_tracer_last_outer%get_field('ageofair', ageofair)
+      call con_tracer_last_outer%get_field('ageofair', ageofair)
       call init_ageofair( ageofair )
     end if
 
@@ -648,10 +693,10 @@ subroutine create_model_data( modeldb,      &
             call modeldb%model_data%fd_fields%get_field('dust1_mmr', dust1_mmr)
             call modeldb%model_data%fd_fields%get_field('dust2_mmr', dust2_mmr)
             ! Load LFRIC dust fields
-            call modeldb%model_data%aerosol_fields%get_field('n_acc_ins', n_acc_ins)
-            call modeldb%model_data%aerosol_fields%get_field('acc_ins_du', acc_ins_du)
-            call modeldb%model_data%aerosol_fields%get_field('n_cor_ins', n_cor_ins)
-            call modeldb%model_data%aerosol_fields%get_field('cor_ins_du', cor_ins_du)
+            call aerosol_fields%get_field('n_acc_ins', n_acc_ins)
+            call aerosol_fields%get_field('acc_ins_du', acc_ins_du)
+            call aerosol_fields%get_field('n_cor_ins', n_cor_ins)
+            call aerosol_fields%get_field('cor_ins_du', cor_ins_du)
 
             ! Transform UM dust fields to LFRIC dust fields
             call invoke(dust_transform_kernel_type ( n_acc_ins, acc_ins_du, &
@@ -724,7 +769,7 @@ subroutine create_model_data( modeldb,      &
           'Energy correction valid for spherical geometry only.'
           call log_event(log_scratch_space, log_level_error)
         end if
-        call modeldb%model_data%derived_fields%get_field('accumulated_fluxes',accumulated_fluxes)
+        call derived_fields%get_field('accumulated_fluxes',accumulated_fluxes)
       end if
 
       if (.not. checkpoint_read .and. zero_w2v_wind) then
@@ -732,7 +777,7 @@ subroutine create_model_data( modeldb,      &
       end if
       call map_physics_fields_alg(u, exner, rho, theta,     &
                                   moist_dyn_array%bundle,     &
-                                  modeldb%model_data%derived_fields)
+                                  derived_fields)
 
       ! Initialise ancillary fields
       select case ( ancil_choice )
@@ -817,7 +862,7 @@ subroutine create_model_data( modeldb,      &
         call compute_total_mass_alg( total_dry_mass, rho, mesh )
 
         call compute_total_energy_alg( total_energy_previous,                 &
-                                       modeldb%model_data%derived_fields,     &
+                                       derived_fields,                        &
                                        u, theta, exner, rho,                  &
                                        mr_array%bundle,                       &
                                        mesh, twod_mesh )
@@ -926,6 +971,16 @@ subroutine create_model_data( modeldb,      &
       type(field_collection_type), pointer :: cpl_rcv_2d
       type(field_collection_type), pointer :: cpl_snd_0d
 #endif
+      type(field_collection_type), pointer :: electric_fields
+      type(field_collection_type), pointer :: orography_fields
+      type(field_collection_type), pointer :: adv_tracer_all_outer
+      type(field_collection_type), pointer :: adv_tracer_last_outer
+      type(field_collection_type), pointer :: con_tracer_all_outer
+      type(field_collection_type), pointer :: con_tracer_last_outer
+      type(field_collection_type), pointer :: microphysics_fields
+      type(field_collection_type), pointer :: derived_fields
+      type(field_collection_type), pointer :: cloud_fields
+      type(field_collection_type), pointer :: aerosol_fields
 
       depository => modeldb%fields%get_field_collection("depository")
       prognostic_fields => modeldb%fields%get_field_collection("prognostic_fields")
@@ -937,28 +992,38 @@ subroutine create_model_data( modeldb,      &
       surface_fields => modeldb%fields%get_field_collection("surface_fields")
       convection_fields => modeldb%fields%get_field_collection("convection_fields")
       stph_fields => modeldb%fields%get_field_collection("stph_fields")
+      electric_fields => modeldb%fields%get_field_collection("electric_fields")
+      orography_fields => modeldb%fields%get_field_collection("orography_fields")
+      adv_tracer_last_outer => modeldb%fields%get_field_collection("adv_tracer_last_outer")
+      adv_tracer_all_outer => modeldb%fields%get_field_collection("adv_tracer_all_outer")
+      con_tracer_last_outer => modeldb%fields%get_field_collection("con_tracer_last_outer")
+      con_tracer_all_outer => modeldb%fields%get_field_collection("con_tracer_all_outer")
+      microphysics_fields => modeldb%fields%get_field_collection("microphysics_fields")
+      derived_fields => modeldb%fields%get_field_collection("derived_fields")
+      cloud_fields => modeldb%fields%get_field_collection("cloud_fields")
+      aerosol_fields => modeldb%fields%get_field_collection("aerosol_fields")
 
       ! Clear all the fields in each field collection
       call depository%clear()
       call prognostic_fields%clear()
       call diagnostic_fields%clear()
-      call modeldb%model_data%adv_tracer_last_outer%clear()
-      call modeldb%model_data%adv_tracer_all_outer%clear()
-      call modeldb%model_data%con_tracer_last_outer%clear()
-      call modeldb%model_data%con_tracer_all_outer%clear()
-      call modeldb%model_data%derived_fields%clear()
+      call adv_tracer_last_outer%clear()
+      call adv_tracer_all_outer%clear()
+      call con_tracer_last_outer%clear()
+      call con_tracer_all_outer%clear()
+      call derived_fields%clear()
       call modeldb%model_data%radiation_fields%clear()
-      call modeldb%model_data%microphysics_fields%clear()
-      call modeldb%model_data%electric_fields%clear()
-      call modeldb%model_data%orography_fields%clear()
+      call microphysics_fields%clear()
+      call electric_fields%clear()
+      call orography_fields%clear()
       call turbulence_fields%clear()
       call convection_fields%clear()
-      call modeldb%model_data%cloud_fields%clear()
+      call cloud_fields%clear()
       call surface_fields%clear()
       call soil_fields%clear()
       call snow_fields%clear()
       call chemistry_fields%clear()
-      call modeldb%model_data%aerosol_fields%clear()
+      call aerosol_fields%clear()
       call stph_fields%clear()
       call modeldb%model_data%fd_fields%clear()
 #ifdef COUPLED

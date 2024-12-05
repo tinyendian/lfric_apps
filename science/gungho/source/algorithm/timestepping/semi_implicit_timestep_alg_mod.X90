@@ -314,25 +314,25 @@ contains
     mesh => theta%get_mesh()
     twod_mesh => mesh_collection%get_mesh(mesh, TWOD)
 
-    adv_tracer_all_outer => model_data%adv_tracer_all_outer
-    adv_tracer_last_outer => model_data%adv_tracer_last_outer
-    con_tracer_all_outer => model_data%con_tracer_all_outer
-    con_tracer_last_outer => model_data%con_tracer_last_outer
-    derived_fields => model_data%derived_fields
+    adv_tracer_all_outer => modeldb%fields%get_field_collection("adv_tracer_all_outer")
+    adv_tracer_last_outer => modeldb%fields%get_field_collection("adv_tracer_last_outer")
+    con_tracer_all_outer => modeldb%fields%get_field_collection("con_tracer_all_outer")
+    con_tracer_last_outer => modeldb%fields%get_field_collection("con_tracer_last_outer")
+    derived_fields => modeldb%fields%get_field_collection("derived_fields")
     radiation_fields => model_data%radiation_fields
-    microphysics_fields => model_data%microphysics_fields
-    electric_fields => model_data%electric_fields
-    orography_fields => model_data%orography_fields
+    microphysics_fields => modeldb%fields%get_field_collection("microphysics_fields")
     turbulence_fields => modeldb%fields%get_field_collection("turbulence_fields")
     convection_fields => modeldb%fields%get_field_collection("convection_fields")
-    cloud_fields => model_data%cloud_fields
+    cloud_fields => modeldb%fields%get_field_collection("cloud_fields")
     surface_fields => modeldb%fields%get_field_collection("surface_fields")
     soil_fields => modeldb%fields%get_field_collection("soil_fields")
     snow_fields => modeldb%fields%get_field_collection("snow_fields")
     chemistry_fields => modeldb%fields%get_field_collection("chemistry_fields")
-    aerosol_fields => model_data%aerosol_fields
+    aerosol_fields => modeldb%fields%get_field_collection("aerosol_fields")
     stph_fields => modeldb%fields%get_field_collection("stph_fields")
     lbc_fields => model_data%lbc_fields
+    electric_fields => modeldb%fields%get_field_collection("electric_fields")
+    orography_fields => modeldb%fields%get_field_collection("orography_fields")
 
     temp_corr_io_value => get_io_value( modeldb%values, 'temperature_correction_io_value')
     ! Get temperature increment for energy correction

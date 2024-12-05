@@ -364,8 +364,8 @@ module update_iau_inc_alg_mod
 
     iau_fields => modeldb % fields % get_field_collection("iau_fields")
     prognostic_fields => modeldb%fields%get_field_collection("prognostic_fields")
-    cloud_fields => modeldb % model_data % cloud_fields
-    derived_fields => modeldb % model_data % derived_fields
+    cloud_fields => modeldb%fields%get_field_collection("cloud_fields")
+    derived_fields => modeldb%fields%get_field_collection("derived_fields")
     surface_fields => modeldb%fields%get_field_collection("surface_fields")
     soil_fields => modeldb%fields%get_field_collection("soil_fields")
     snow_fields => modeldb%fields%get_field_collection("snow_fields")

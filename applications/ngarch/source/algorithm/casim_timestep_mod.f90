@@ -59,12 +59,22 @@ contains
     type( field_array_type ),      pointer :: mr
     type( mesh_type ),             pointer :: mesh
 
+    type(field_collection_type),   pointer :: microphysics_fields
+    type(field_collection_type),   pointer :: derived_fields
+    type(field_collection_type),   pointer :: cloud_fields
+    type(field_collection_type),   pointer :: aerosol_fields
+
     collection => modeldb%fields%get_field_collection( "moisture_fields" )
+    microphysics_fields => modeldb%fields%get_field_collection("microphysics_fields")
+    derived_fields => modeldb%fields%get_field_collection("derived_fields")
+    cloud_fields => modeldb%fields%get_field_collection("cloud_fields")
+    aerosol_fields => modeldb%fields%get_field_collection("aerosol_fields")
+
     call collection%get_field( "mr", mr )
     call clone_bundle( mr%bundle, dmr_mphys, nummr )
     call set_bundle_scalar( 0.0_r_def, dmr_mphys, nummr )
 
-    call modeldb%model_data%microphysics_fields%get_field( 'dtheta_mphys', dtheta_mphys )
+    call microphysics_fields%get_field( 'dtheta_mphys', dtheta_mphys )
 
     collection => modeldb%fields%get_field_collection( "depository" )
     call collection%get_field( "theta", theta )
@@ -76,10 +86,10 @@ contains
     ! Call the algorithm
     call log_event( "Running CASIM", LOG_LEVEL_INFO )
     call casim_alg( mr%bundle, theta, rho,                  &
-                    modeldb%model_data%derived_fields,      &
-                    modeldb%model_data%microphysics_fields, &
-                    modeldb%model_data%cloud_fields,        &
-                    modeldb%model_data%aerosol_fields,      &
+                    derived_fields,                         &
+                    microphysics_fields,                    &
+                    cloud_fields,                           &
+                    aerosol_fields,                         &
                     turbulence_fields, mesh,                &
                     dmr_mphys, dtheta_mphys, dcfl, dcff, dbcf )
     call log_event( "CASIM completed", LOG_LEVEL_INFO )

@@ -221,20 +221,10 @@ contains
 
     self%gungho_axes => gungho_axes
 
-    call self%derived%initialise(name='derived_fields', table_len=100)
-
     ! Create collection of fields to be advected
-    call self%adv_last_outer%initialise(name='adv_tracer_last_outer', table_len=100)
-    call self%adv_all_outer%initialise(name='adv_tracer_all_outer', table_len=100)
-    call self%con_last_outer%initialise(name='con_tracer_last_outer', table_len=100)
-    call self%con_all_outer%initialise(name='con_tracer_all_outer', table_len=100)
-    call self%cloud%initialise(name='cloud_fields', table_len=100)
+
 #ifdef UM_PHYSICS
     call self%radiation%initialise(name='radiation_fields', table_len=100)
-    call self%microphysics%initialise(name='microphysics_fields', table_len=100)
-    call self%electric%initialise(name='electric_fields', table_len=100)
-    call self%orography%initialise(name='orography_fields', table_len=100)
-    call self%aerosol%initialise(name='aerosol_fields', table_len=100)
 #endif
    call gungho_axes%initialise()
 if (limited_area) then
