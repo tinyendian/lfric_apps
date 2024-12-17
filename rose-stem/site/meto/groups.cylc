@@ -6,15 +6,6 @@
 {% do LOG.debug("Entered site/meto/groups.cylc") %}
 
 {%- do site_groups.update({
-    "developer" : [
-        "spice_developer",
-        "xc40_developer",
-        "scripts",
-    ],
-    "all": [
-        "spice",
-        "xc40",
-    ],
     "scripts": [
         "config_dump_checker",
         "style_checker",
@@ -26,44 +17,89 @@
         "python_unit_tests",
         "local_build_test",
     ],
-    "build": [
-        "spice_build",
-        "xc40_build",
-    ],
-    "unit_tests": [
-        "spice_unit_tests",
-        "xc40_unit_tests"
-    ],
-    "integration_tests": [
-        "spice_integration_tests",
-        "xc40_integration_tests",
-    ],
-    "monsoon": [
-        "gungho_model_xc40",
-        "lfric_atm_xc40",
-    ],
-    "performance": [
-        "xc40_performance",
-    ],
     "spice_developer": [],
     "spice": ["spice_developer"],
     "xc40_developer": [],
     "xc40": ["xc40_developer"],
     "ex1a_developer": [],
  	"ex1a": ["ex1a_developer"],
+    "azspice_developer": [],
+    "azspice": ["azspice_developer"],
     "spice_build": [],
     "xc40_build": [],
     "ex1a_build": [],
+    "azspice_build": [],
     "ex1a_cce": [],
     "spice_unit_tests": [],
     "xc40_unit_tests": [],
     "ex1a_unit_tests": [],
+    "azspice_unit_tests": [],
     "spice_integration_tests": [],
     "xc40_integration_tests": [],
     "ex1a_integration_tests": [],
+    "azspice_integration_tests": [],
     "xc40_performance": [],
-
     }) %}
+
+{% if site_vars.launch_platform == "spice" %}
+    {% do site_groups.update({
+            "developer" : [
+            "spice_developer",
+            "xc40_developer",
+            "scripts",
+        ],
+        "all": [
+            "spice",
+            "xc40",
+        ],
+        "build": [
+            "spice_build",
+            "xc40_build",
+        ],
+        "unit_tests": [
+            "spice_unit_tests",
+            "xc40_unit_tests"
+        ],
+        "integration_tests": [
+            "spice_integration_tests",
+            "xc40_integration_tests",
+        ],
+        "monsoon": [
+            "gungho_model_xc40",
+            "lfric_atm_xc40",
+        ],
+        "performance": [
+            "xc40_performance",
+        ],
+    }) %}
+{% else %}
+    {% do site_groups.update({
+        "developer" : [
+            "azspice_developer",
+            "ex1a_developer",
+            "scripts",
+        ],
+        "all": [
+            "azspice",
+            "ex1a",
+        ],
+        "build": [
+            "azspice_build",
+            "ex1a_build",
+        ],
+        "unit_tests": [
+            "azspice_unit_tests",
+            "ex1a_unit_tests"
+        ],
+        "integration_tests": [
+            "azspice_integration_tests",
+            "ex1a_integration_tests",
+        ],
+        "performance": [
+            "ex1a_performance",
+        ],
+    }) %}
+{% endif %}
 
 {% include "site/meto/groups/groups_adjoint.cylc" %}
 {% include "site/meto/groups/groups_adjoint_tests.cylc" %}
@@ -85,5 +121,23 @@
 {% include "site/meto/groups/groups_solver.cylc" %}
 {% include "site/meto/groups/groups_transport.cylc" %}
 {% include "site/meto/groups/groups_um_physics_interface.cylc" %}
+
+
+
+{# Maintaining a list of jobs that aren't running properly #}
+{# This is done to have a clean test suite on EX + Azspice at vn2.0 #}
+{# This group should be squashed over the next release #}
+{# TODO: Squash this group in tickets #517 + #518 #}
+{% do site_groups.update({
+    "non_working_group": [
+        "lfric_atm_scm_ral3_constrain-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_snow-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_dice2-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_rce_test-BiP64x64-1500x1500_MG_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_coarse_aero-C48_MG_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_debug-C48_MG_ex1a_gnu_full-debug-64bit",
+        "lfric_atm_nwp_gal9_da-C12_ex1a_cce_fast-debug-64bit",
+    ]
+    }) %}
 
 {% do LOG.debug("Finished in site/meto/groups.cylc") %}

@@ -59,7 +59,12 @@ def read_nodal_data(filestem, ncomp, comp):
             tmp_data = pd.read_csv(f, header=None, names=col_names, skiprows=1,
                                    comment=']', dtype=col_types, sep='\s+')
 
-            all_data = all_data.append(tmp_data)
+            # For compatibility between different pandas versions on old and
+            # new meto systems, use this try-except
+            try:
+                all_data = all_data._append(tmp_data)
+            except AttributeError:
+                all_data = all_data.append(tmp_data)
 
         # Select full or half levels for vector fields, if required
         if ncomp == 3:  # vector field

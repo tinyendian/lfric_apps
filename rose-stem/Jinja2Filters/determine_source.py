@@ -24,7 +24,7 @@ def determine_source(wc_loc, repo):
     try:
         host, path = wc_loc.split(":")
         path = os.path.join(path, "dependencies.sh")
-        cat_command = f"ssh {host} cat {path}"
+        cat_command = f"ssh -o StrictHostKeyChecking=no {host} cat {path}"
     except ValueError:
         path = os.path.join(wc_loc, "dependencies.sh")
         cat_command = f"cat {path}"

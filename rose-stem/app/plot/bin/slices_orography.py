@@ -38,13 +38,6 @@ import sys
 
 from read_data import read_nodal_data
 
-# Use viridis colormap
-from python_maps import viridis_data
-from matplotlib.colors import ListedColormap
-
-viridis = ListedColormap(viridis_data, name='viridis')
-plt.register_cmap(name='viridis', cmap=viridis)
-
 levels = None
 data = None
 
@@ -106,8 +99,6 @@ def make_figure(plotpath, field, component, timestep, plotlong, plotlat,
         cc = np.concatenate((np.linspace(-3.0, -0.2, 15),
                              np.linspace(0.2, 3.0, 15)), axis=0)
 
-    c_map = viridis
-
     # xz plot
     if int(plotlat) >= -90 and int(plotlat) <= 90:
 
@@ -122,8 +113,8 @@ def make_figure(plotpath, field, component, timestep, plotlong, plotlat,
         zi_adj = height_i[lat, :, :]
 
         fig = plt.figure(figsize=(10, 5))
-        cf = plt.contourf(xi*r2d, zi_adj, dz, cc, cmap=c_map)
-        plt.colorbar(cf, cmap=c_map)
+        cf = plt.contourf(xi*r2d, zi_adj, dz, cc)
+        plt.colorbar(cf)
         cl = plt.contour(xi*r2d, zi_adj, dz, cc, linewidths=0.5, colors='k')
         plt.title('max: %e, min: %e' % (np.max(dz), np.min(dz)))
         plt.xlabel('Longitude')
@@ -141,8 +132,8 @@ def make_figure(plotpath, field, component, timestep, plotlong, plotlat,
         fig = plt.figure(figsize=(10, 5))
         xi, yi = np.meshgrid(x2d, y2d)
         dz = zi[:, :, int(plotlevel)]
-        cf = plt.contourf(xi*r2d, yi*r2d, dz, cc, cmap=c_map)
-        plt.colorbar(cf, cmap=c_map)
+        cf = plt.contourf(xi*r2d, yi*r2d, dz, cc)
+        plt.colorbar(cf)
         cl = plt.contour(xi * r2d, yi * r2d, dz, cc, linewidths=0.5,
                          colors='k')
         plt.xlabel('Longitude')

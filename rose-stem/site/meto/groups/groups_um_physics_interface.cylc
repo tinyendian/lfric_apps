@@ -19,6 +19,18 @@
     ],
     }) %}
 
+{# Azspice Groups #}
+{% do site_groups.update({
+    "um_physics_interface_azspice_developer": [
+    ],
+    "um_physics_interface_azspice": [
+        "um_physics_interface_azspice_developer",
+    ],
+    "um_physics_interface_azspice_unit_tests": [
+        "um_physics_interface_unit_tests_azspice_gnu_64bit",
+    ],
+    }) %}
+
 {# XC40 Groups #}
 {% do site_groups.update({
     "um_physics_interface_xc40_developer": [
@@ -33,23 +45,39 @@
     }) %}
 
 {# Platform Generic Groups #}
-{% do site_groups.update({
-    "um_physics_interface_developer": [
-        "scripts",
-        "um_physics_interface_spice_developer",
-        "um_physics_interface_xc40_developer",
-        "um_physics_interface_unit_tests",
-    ],
-    "um_physics_interface": [
-        "um_physics_interface_developer",
-        "um_physics_interface_spice",
-        "um_physics_interface_xc40",
-    ],
-    "um_physics_interface_unit_tests": [
-        "um_physics_interface_spice_unit_tests",
-        "um_physics_interface_xc40_unit_tests",
-    ],
-    }) %}
+{% if site_vars.launch_platform == "spice" %}
+    {% do site_groups.update({
+        "um_physics_interface_developer": [
+            "scripts",
+            "um_physics_interface_spice_developer",
+            "um_physics_interface_xc40_developer",
+            "um_physics_interface_unit_tests",
+        ],
+        "um_physics_interface": [
+            "um_physics_interface_developer",
+            "um_physics_interface_spice",
+            "um_physics_interface_xc40",
+        ],
+        "um_physics_interface_unit_tests": [
+            "um_physics_interface_spice_unit_tests",
+            "um_physics_interface_xc40_unit_tests",
+        ],
+        }) %}
+{% else %}
+    {% do site_groups.update({
+        "um_physics_interface_developer": [
+            "scripts",
+            "um_physics_interface_azspice_developer",
+        ],
+        "um_physics_interface": [
+            "um_physics_interface_developer",
+            "um_physics_interface_azspice",
+        ],
+        "um_physics_interface_unit_tests": [
+            "um_physics_interface_azspice_unit_tests",
+        ],
+        }) %}
+{% endif %}
 
 {# Generic Extends #}
 {% do site_groups.developer.extend(site_groups.um_physics_interface_developer) %}
@@ -60,6 +88,11 @@
 {% do site_groups.spice_developer.extend(site_groups.um_physics_interface_spice_developer) %}
 {% do site_groups.spice.extend(site_groups.um_physics_interface_spice) %}
 {% do site_groups.spice_unit_tests.extend(site_groups.um_physics_interface_spice_unit_tests) %}
+
+{# Azspice Extends #}
+{% do site_groups.azspice_developer.extend(site_groups.um_physics_interface_azspice_developer) %}
+{% do site_groups.azspice.extend(site_groups.um_physics_interface_azspice) %}
+{% do site_groups.azspice_unit_tests.extend(site_groups.um_physics_interface_azspice_unit_tests) %}
 
 {# XC40 Extends #}
 {% do site_groups.xc40_developer.extend(site_groups.um_physics_interface_xc40_developer) %}

@@ -29,6 +29,25 @@
     ],
     })  %}
 
+{# Azspice Groups #}
+{% do site_groups.update({
+    "adjoint_tests_azspice_developer": [
+        "adjoint_tests_default-C12_azspice_gnu_fast-debug-64bit",
+        "adjoint_tests_default-C12_azspice_gnu_full-debug-64bit",
+        "adjoint_tests_azspice_canned",
+    ],
+    "adjoint_tests_azspice": [
+        "adjoint_tests_azspice_developer",
+    ],
+    "adjoint_tests_azspice_canned": [
+        "adjoint_tests_canned_azspice_gnu_fast-debug-64bit",
+    ],
+    "adjoint_tests_azspice_build": [
+        "build_adjoint_tests_azspice_gnu_fast-debug-64bit",
+        "build_adjoint_tests_azspice_gnu_full-debug-64bit",
+    ],
+    })  %}
+
 {# XC40 Groups #}
 {% do site_groups.update({
     "adjoint_tests_xc40_developer": [
@@ -68,26 +87,45 @@
     })  %}
 
 {# Platform Generic Groups #}
-{% do site_groups.update({
-    "adjoint_tests_developer": [
-        "scripts",
-        "adjoint_tests_spice_developer",
-        "adjoint_tests_xc40_developer",
-    ],
-    "adjoint_tests": [
-        "adjoint_tests_developer",
-        "adjoint_tests_spice",
-        "adjoint_tests_xc40",
-    ],
-    "adjoint_tests_canned": [
-        "adjoint_tests_spice_canned",
-        "adjoint_tests_xc40_canned",
-    ],
-    "adjoint_tests_build": [
-        "adjoint_tests_spice_build",
-        "adjoint_tests_xc40_build",
-    ],
-    }) %}
+{% if site_vars.launch_platform == "spice" %}
+    {% do site_groups.update({
+        "adjoint_tests_developer": [
+            "scripts",
+            "adjoint_tests_spice_developer",
+            "adjoint_tests_xc40_developer",
+        ],
+        "adjoint_tests": [
+            "adjoint_tests_developer",
+            "adjoint_tests_spice",
+            "adjoint_tests_xc40",
+        ],
+        "adjoint_tests_canned": [
+            "adjoint_tests_spice_canned",
+            "adjoint_tests_xc40_canned",
+        ],
+        "adjoint_tests_build": [
+            "adjoint_tests_spice_build",
+            "adjoint_tests_xc40_build",
+        ],
+        }) %}
+{% else %}
+    {% do site_groups.update({
+        "adjoint_tests_developer": [
+            "scripts",
+            "adjoint_tests_azspice_developer",
+        ],
+        "adjoint_tests": [
+            "adjoint_tests_developer",
+            "adjoint_tests_azspice",
+        ],
+        "adjoint_tests_canned": [
+            "adjoint_tests_azspice_canned",
+        ],
+        "adjoint_tests_build": [
+            "adjoint_tests_azspice_build",
+        ],
+        }) %}
+{% endif %}
 
 {# Platform Generic Extends #}
 {% do site_groups.developer.extend(site_groups.adjoint_tests_developer) %}
@@ -98,6 +136,11 @@
 {% do site_groups.spice_developer.extend(site_groups.adjoint_tests_spice_developer) %}
 {% do site_groups.spice.extend(site_groups.adjoint_tests_spice) %}
 {% do site_groups.spice_build.extend(site_groups.adjoint_tests_spice_build) %}
+
+{# Azspice Extends #}
+{% do site_groups.azspice_developer.extend(site_groups.adjoint_tests_azspice_developer) %}
+{% do site_groups.azspice.extend(site_groups.adjoint_tests_azspice) %}
+{% do site_groups.azspice_build.extend(site_groups.adjoint_tests_azspice_build) %}
 
 {# XC40 Extends #}
 {% do site_groups.xc40_developer.extend(site_groups.adjoint_tests_xc40_developer) %}

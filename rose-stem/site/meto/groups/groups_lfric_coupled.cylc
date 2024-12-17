@@ -19,24 +19,26 @@
     }) %}
 
 {# Platform Generic Groups #}
-{% do site_groups.update({
-    "lfric_coupled_developer": [
-        "scripts",
-        "lfric_coupled_xc40_developer",
-    ],
-    "lfric_coupled": [
-        "lfric_coupled_developer",
-        "lfric_coupled_xc40",
-    ],
-    "lfric_coupled_build": [
-        "lfric_coupled_xc40_build",
-    ],
-    }) %}
+{% if site_vars.launch_platform == "spice" %}
+    {% do site_groups.update({
+        "lfric_coupled_developer": [
+            "scripts",
+            "lfric_coupled_xc40_developer",
+        ],
+        "lfric_coupled": [
+            "lfric_coupled_developer",
+            "lfric_coupled_xc40",
+        ],
+        "lfric_coupled_build": [
+            "lfric_coupled_xc40_build",
+        ],
+        }) %}
 
-{# Platform Generic Extends #}
-{% do site_groups.developer.extend(site_groups.lfric_coupled_developer) %}
-{% do site_groups.all.extend(site_groups.lfric_coupled) %}
-{% do site_groups.build.extend(site_groups.lfric_coupled_build) %}
+    {# Platform Generic Extends #}
+    {% do site_groups.developer.extend(site_groups.lfric_coupled_developer) %}
+    {% do site_groups.all.extend(site_groups.lfric_coupled) %}
+    {% do site_groups.build.extend(site_groups.lfric_coupled_build) %}
+{% endif %}
 
 {# XC40 Extends #}
 {% do site_groups.xc40_developer.extend(site_groups.lfric_coupled_xc40_developer) %}

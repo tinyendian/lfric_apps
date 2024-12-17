@@ -76,7 +76,7 @@
         script="rose task-run --app-key=validate_rose_meta"
         [[[environment]]]
             ROSE_PYTHONPATH = $PYTHONPATH
-            ROSE_META_PATH = $SOURCE_ROOT/core/
+            ROSE_META_PATH = $SOURCE_ROOT/core/:$SOURCE_ROOT/apps
 
 {% elif "kgo_groups_checker" in task %}
 
@@ -103,7 +103,11 @@
 {% elif "local_build_test" in task %}
     {# Test the local_build script by building gungho_model #}
 
-    {% set local_build_inherit = "SCRIPTS,"~site_vars["scripts_platform"]|upper~"_BUILD_INTEL" %}
+    {% if "launch_platform" in site_vars and site_vars.launch_platform == "azspice" %}
+        {% set local_build_inherit = "SCRIPTS,"~site_vars["scripts_platform"]|upper~"_BUILD_GNU" %}
+    {% else %}
+        {% set local_build_inherit = "SCRIPTS,"~site_vars["scripts_platform"]|upper~"_BUILD_INTEL" %}
+    {% endif %}
 
     [[{{task}}]]
         inherit={{local_build_inherit|upper}}

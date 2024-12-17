@@ -24,6 +24,21 @@
     ],
     })  %}
 
+{# Azspice Groups #}
+{% do site_groups.update({
+    "ngarch_azspice_developer": [
+        "ngarch_default-C24_azspice_gnu_fast-debug-64bit",
+        "ngarch_default-C24_azspice_gnu_full-debug-64bit",
+    ],
+    "ngarch_azspice": [
+        "ngarch_azspice_developer",
+    ],
+    "ngarch_azspice_build": [
+        "build_ngarch_azspice_gnu_fast-debug-64bit",
+        "build_ngarch_azspice_gnu_full-debug-64bit",
+    ],
+    })  %}
+
 {# XC40 Groups #}
 {% do site_groups.update({
     "ngarch_xc40_developer": [
@@ -40,22 +55,38 @@
     })  %}
 
 {# Platform Generic Groups #}
-{% do site_groups.update({
-    "ngarch_developer": [
-        "scripts",
-        "ngarch_spice_developer",
-        "ngarch_xc40_developer",
-    ],
-    "ngarch": [
-        "ngarch_developer",
-        "ngarch_spice",
-        "ngarch_xc40",
-    ],
-    "ngarch_build": [
-        "ngarch_spice_build",
-        "ngarch_xc40_build",
-    ],
-    }) %}
+{% if site_vars.launch_platform == "spice" %}
+    {% do site_groups.update({
+        "ngarch_developer": [
+            "scripts",
+            "ngarch_spice_developer",
+            "ngarch_xc40_developer",
+        ],
+        "ngarch": [
+            "ngarch_developer",
+            "ngarch_spice",
+            "ngarch_xc40",
+        ],
+        "ngarch_build": [
+            "ngarch_spice_build",
+            "ngarch_xc40_build",
+        ],
+        }) %}
+{% else %}
+    {% do site_groups.update({
+        "ngarch_developer": [
+            "scripts",
+            "ngarch_azspice_developer",
+        ],
+        "ngarch": [
+            "ngarch_developer",
+            "ngarch_azspice",
+        ],
+        "ngarch_build": [
+            "ngarch_azspice_build",
+        ],
+        }) %}
+{% endif %}
 
 {# Platform Generic Extends #}
 {% do site_groups.developer.extend(site_groups.ngarch_developer) %}
@@ -66,6 +97,11 @@
 {% do site_groups.spice_developer.extend(site_groups.ngarch_spice_developer) %}
 {% do site_groups.spice.extend(site_groups.ngarch_spice) %}
 {% do site_groups.spice_build.extend(site_groups.ngarch_spice_build) %}
+
+{# Azspice Extends #}
+{% do site_groups.azspice_developer.extend(site_groups.ngarch_azspice_developer) %}
+{% do site_groups.azspice.extend(site_groups.ngarch_azspice) %}
+{% do site_groups.azspice_build.extend(site_groups.ngarch_azspice_build) %}
 
 {# XC40 Extends #}
 {% do site_groups.xc40_developer.extend(site_groups.ngarch_xc40_developer) %}

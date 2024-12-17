@@ -19,25 +19,27 @@
     }) %}
 
 {# Platform Generic Groups #}
-{% do site_groups.update({
-    "coupled_interface_developer": [
-        "scripts",
-        "coupled_interface_xc40_developer",
-        "coupled_interface_unit_tests",
-    ],
-    "coupled_interface": [
-        "coupled_interface_developer",
-        "coupled_interface_xc40",
-    ],
-    "coupled_interface_unit_tests": [
-        "coupled_interface_xc40_unit_tests",
-    ],
-    }) %}
+{% if site_vars.launch_platform == "spice" %}
+    {% do site_groups.update({
+        "coupled_interface_developer": [
+            "scripts",
+            "coupled_interface_xc40_developer",
+            "coupled_interface_unit_tests",
+        ],
+        "coupled_interface": [
+            "coupled_interface_developer",
+            "coupled_interface_xc40",
+        ],
+        "coupled_interface_unit_tests": [
+            "coupled_interface_xc40_unit_tests",
+        ],
+        }) %}
 
-{# Generic Extends #}
-{% do site_groups.developer.extend(site_groups.coupled_interface_developer) %}
-{% do site_groups.all.extend(site_groups.coupled_interface) %}
-{% do site_groups.unit_tests.extend(site_groups.coupled_interface_unit_tests) %}
+    {# Generic Extends #}
+    {% do site_groups.developer.extend(site_groups.coupled_interface_developer) %}
+    {% do site_groups.all.extend(site_groups.coupled_interface) %}
+    {% do site_groups.unit_tests.extend(site_groups.coupled_interface_unit_tests) %}
+{% endif %}
 
 {# XC40 Extends #}
 {% do site_groups.xc40_developer.extend(site_groups.coupled_interface_xc40_developer) %}

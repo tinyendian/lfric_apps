@@ -100,6 +100,92 @@
     }) %}
 
 {# ###################################################################### #}
+{# Azspice Test Groups #}
+{# ###################################################################### #}
+{% do site_groups.update({
+    "lfric_atm_nwp_azspice_developer": [
+        "lfric_atm_nwp_gal9_nomg-C12_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_nomg-C12_azspice_gnu_production-64bit-rbl32-rtran32",
+        "lfric_atm_nwp_gal9_molw-C12_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_debug-C12_azspice_gnu_full-debug-64bit",
+        "lfric_atm_nwp_gal9_short-C12_azspice_gnu_fast-debug-64bit",
+    ],
+    "lfric_atm_nwp_azspice_extra": [
+        "lfric_atm_nwp_gal9_nomg-C12_azspice_gnu_fast-debug-64bit-rbl32-rtran32",
+        "lfric_atm_nwp_gal9-C48_MG_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_da-C12_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_ls_and_jedi-C12_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_debug-C48_MG_azspice_gnu_full-debug-64bit",
+        "lfric_atm_nwp_casim-C12_azspice_gnu_fast-debug-64bit",
+    ],
+    "lfric_atm_nwp_azspice": [
+        "lfric_atm_nwp_azspice_developer",
+        "lfric_atm_nwp_azspice_extra",
+    ],
+    "lfric_atm_ral_azspice_developer": [
+        "lfric_atm_ral3-seuk_MG_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_ral3_ens-seuk_MG_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_ral3_mixmol-seuk_MG_azspice_gnu_fast-debug-64bit",
+    ],
+    "lfric_atm_scm_azspice_developer": [
+        "lfric_atm_scm_gal9_bomex-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_coma9_bomex-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_comorph_dev_bomex-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_cbl_dry-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_comp_tran_ref-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_gabls4-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_sahara-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_seaice-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_toga-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_coma9_toga-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_comorph_dev_toga-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_llcs-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_rad_gas-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_ral3_moruses-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_ral3_urban2t-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_ukca_land-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_ukca_sea-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_canned_azspice_gnu_fast-debug-64bit",
+    ],
+    "lfric_atm_azspice_developer": [
+        "lfric_atm_nwp_azspice_developer",
+        "lfric_atm_clim_gal9_nomg-C12_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_ral_azspice_developer",
+        "lfric_atm_scm_azspice_developer",
+    ],
+    "lfric_atm_azspice_extra": [
+        "lfric_atm_nwp_azspice_extra",
+        "lfric_atm_clim_gal9_chem-C12_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_aquaplanet-C12_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_thai_ben1-C48_MG_azspice_gnu_fast-debug-64bit",
+    ],
+    "lfric_atm_azspice": [
+        "lfric_atm_azspice_developer",
+        "lfric_atm_azspice_extra",
+    ],
+    "lfric_atm_azspice_build": [
+        "build_lfric_atm_azspice_gnu_fast-debug-64bit",
+    ],
+    "lfric_atm_xc40_perftools":[
+        "lfric_atm_nwp_gal9-C48_MG_xc40_perftools-gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9-C48_MG_xc40_gnu_fast-debug-64bit",
+    ],
+    }) %}
+
+{# ###################################################################### #}
+{# Azpice User Groups #}
+{# ###################################################################### #}
+{% do site_groups.update({
+    "lfric_atm_scm": [
+        "lfric_atm_scm_azspice_developer",
+        "lfric_atm_scm_gal9_cbl-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_gal9_constrain-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_ral3_comp_tran_ref-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+        "lfric_atm_scm_ral3_dice2-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
+    ],
+    }) %}
+
+{# ###################################################################### #}
 {# XC40 Test Groups #}
 {# ###################################################################### #}
 {% do site_groups.update({
@@ -241,9 +327,7 @@
         "lfric_atm_nwp_gal9_nomg-C12_ex1a_cce_fast-debug-64bit-rbl32-rtran32",
         "lfric_atm_nwp_gal9-C48_MG_ex1a_cce_fast-debug-64bit",
         "lfric_atm_nwp_gal9_coarse_aero-C48_MG_ex1a_cce_fast-debug-64bit",
-        "lfric_atm_nwp_gal9_da-C12_ex1a_cce_fast-debug-64bit",
         "lfric_atm_nwp_gal9_ls_and_jedi-C12_ex1a_cce_fast-debug-64bit",
-        "lfric_atm_nwp_gal9_debug-C48_MG_ex1a_gnu_full-debug-64bit",
         "lfric_atm_nwp_casim-C12_ex1a_cce_fast-debug-64bit",
         "lfric_atm_nwp_coma9-C12_ex1a_cce_fast-debug-64bit",
         "lfric_atm_nwp_comorph_dev-C12_ex1a_cce_fast-debug-64bit",
@@ -331,32 +415,59 @@
 {# ###################################################################### #}
 {# Platform Generic Groups #}
 {# ###################################################################### #}
-{% do site_groups.update({
-    "lfric_atm_developer": [
-        "scripts",
-        "lfric_atm_spice_developer",
-        "lfric_atm_xc40_developer",
-    ],
-    "lfric_atm_extra": [
-        "lfric_atm_spice_extra",
-        "lfric_atm_xc40_extra",
-    ],
-    "lfric_atm_weekly": [
-        "lfric_atm_xc40_weekly",
-        "lfric_atm_ex1a_weekly",
-    ],
-    "lfric_atm_performance": [
-        "lfric_atm_xc40_performance",
-    ],
-    "lfric_atm": [
-        "lfric_atm_developer",
-        "lfric_atm_extra",
-    ],
-    "lfric_atm_build": [
-        "lfric_atm_spice_build",
-        "lfric_atm_xc40_build",
-    ],
-    }) %}
+{% if site_vars.launch_platform == "spice" %}
+    {% do site_groups.update({
+        "lfric_atm_developer": [
+            "scripts",
+            "lfric_atm_spice_developer",
+            "lfric_atm_xc40_developer",
+        ],
+        "lfric_atm_extra": [
+            "lfric_atm_spice_extra",
+            "lfric_atm_xc40_extra",
+        ],
+        "lfric_atm_weekly": [
+            "lfric_atm_xc40_weekly",
+        ],
+        "lfric_atm_performance": [
+            "lfric_atm_xc40_performance",
+        ],
+        "lfric_atm": [
+            "lfric_atm_developer",
+            "lfric_atm_extra",
+        ],
+        "lfric_atm_build": [
+            "lfric_atm_spice_build",
+            "lfric_atm_xc40_build",
+        ],
+        }) %}
+{% else %}
+    {% do site_groups.update({
+        "lfric_atm_developer": [
+            "scripts",
+            "lfric_atm_azspice_developer",
+            "lfric_atm_ex1a_developer",
+        ],
+        "lfric_atm_extra": [
+            "lfric_atm_azspice_extra",
+            "lfric_atm_ex1a_extra",
+        ],
+        "lfric_atm_weekly": [
+            "lfric_atm_ex1a_weekly",
+        ],
+        "lfric_atm_performance": [
+            "lfric_atm_ex1a_performance",
+        ],
+        "lfric_atm": [
+            "lfric_atm_developer",
+            "lfric_atm_extra",
+        ],
+        "lfric_atm_build": [
+            "lfric_atm_azspice_build",
+            "lfric_atm_ex1a_build",
+        ],
+        }) %}
+{% endif %}
 
 {# Platform Generic Extends #}
 {% do site_groups.developer.extend(site_groups.lfric_atm_developer) %}
@@ -368,6 +479,11 @@
 {% do site_groups.spice_developer.extend(site_groups.lfric_atm_spice_developer) %}
 {% do site_groups.spice.extend(site_groups.lfric_atm_spice) %}
 {% do site_groups.spice_build.extend(site_groups.lfric_atm_spice_build) %}
+
+{# Azspice Extends #}
+{% do site_groups.azspice_developer.extend(site_groups.lfric_atm_azspice_developer) %}
+{% do site_groups.azspice.extend(site_groups.lfric_atm_azspice) %}
+{% do site_groups.azspice_build.extend(site_groups.lfric_atm_azspice_build) %}
 
 {# XC40 Extends #}
 {% do site_groups.xc40_developer.extend(site_groups.lfric_atm_xc40_developer) %}

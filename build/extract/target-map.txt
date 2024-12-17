@@ -1,5 +1,6 @@
 generic-x86:  gfortran: meto-x86-gcc-ifort
 generic-x86:  ifort:    meto-x86-gcc-ifort
+meto-azspice: gfortran: meto-ex1a-gnu
 meto-spice:   gfortran: meto-x86-gcc-ifort
 meto-spice:   ifort:    meto-x86-gcc-ifort
 meto-xc40:    crayftn:  meto-xc40-cce
