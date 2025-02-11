@@ -1,5 +1,8 @@
+import re
 import sys
+
 from metomi.rose.upgrade import MacroUpgrade
+
 
 class UpgradeError(Exception):
     """Exception created when an upgrade fails."""
@@ -13,16 +16,32 @@ class UpgradeError(Exception):
 
     __str__ = __repr__
 
+
 """
 Copy this template and complete to add your macro
-
 class vnXX_txxx(MacroUpgrade):
     # Upgrade macro for <TICKET> by <Author>
-
     BEFORE_TAG = "vnX.X"
     AFTER_TAG = "vnX.X_txxx"
-
     def upgrade(self, config, meta_config=None):
         # Add settings
         return config, self.reports
 """
+
+
+class vn20_t334(MacroUpgrade):
+    """Upgrade macro for ticket #334 by Ian Boutle."""
+
+    BEFORE_TAG = "vn2.0"
+    AFTER_TAG = "vn2.0_t334"
+
+    def upgrade(self, config, meta_config=None):
+        # Commands From: science/um_physics_interface/rose-meta/um-convection
+        self.add_setting(config, ["namelist:convection", "efrac"], "1.0")
+        self.add_setting(
+            config, ["namelist:convection", "orig_mdet_fac"], "1.0"
+        )
+        self.add_setting(config, ["namelist:convection", "prog_ent_min"], "0.5")
+        self.add_setting(config, ["namelist:convection", "qlmin"], "4.0e-4")
+
+        return config, self.reports

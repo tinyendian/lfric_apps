@@ -15,9 +15,8 @@ use argument_mod,         only: arg_type,              &
 use extrusion_config_mod, only: planet_radius
 use fs_continuity_mod,    only: WTHETA
 use kernel_mod,           only: kernel_type
-use cloud_config_mod,     only: use_fsd_eff_res
+use cloud_config_mod,     only: use_fsd_eff_res, fsd_min_conv_frac, fsd_conv_const, fsd_nonconv_const
 use fsd_parameters_mod,   only: fsd_eff_lam, f_cons
-use um_physics_init_mod,  only: fsd_min_conv_frac, fsd_conv_const, fsd_nonconv_const
 
 implicit none
 

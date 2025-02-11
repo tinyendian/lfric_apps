@@ -54,5 +54,17 @@ class vn20_t467(MacroUpgrade):
         self.add_setting(config, [nml, "i_update_precfrac"], "'homog'")
         self.add_setting(config, [nml, "l_mcr_precfrac"], l_mcr_precfrac)
         self.add_setting(config, [nml, "l_proc_fluxes"], ".false.")
+        return config, self.reports
+
+
+class vn20_t334(MacroUpgrade):
+    """Upgrade macro for ticket #334 by Ian Boutle."""
+
+    BEFORE_TAG = "vn2.0_t467"
+    AFTER_TAG = "vn2.0_t334"
+
+    def upgrade(self, config, meta_config=None):
+        # Commands From: science/um_physics_interface/rose-meta/um-microphysics
+        self.add_setting(config, ["namelist:microphysics", "mp_dz_scal"], "2.0")
 
         return config, self.reports

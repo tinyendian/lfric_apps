@@ -25,13 +25,16 @@ module um_physics_init_mod
                                         l_radaer,                              &
                                         easyaerosol_sw,                        &
                                         easyaerosol_lw,                        &
-                                        murk, murk_prognostic
+                                        murk, murk_prognostic,                 &
+                                        horiz_d_in => horiz_d,                 &
+                                        us_am_in => us_am
 
   use blayer_config_mod,         only : a_ent_shr, a_ent_2_in => a_ent_2,      &
                                         cbl_opt, cbl_opt_conventional,         &
                                         cbl_opt_standard, cbl_opt_adjustable,  &
                                         cbl_mix_fac,                           &
                                         dec_thres_cloud_in => dec_thres_cloud, &
+                                        dec_thres_cu_in => dec_thres_cu,       &
                                         dyn_diag, dyn_diag_zi_l_sea,           &
                                         dyn_diag_ri_based, dyn_diag_zi_l_cu,   &
                                         near_neut_z_on_l_in=>near_neut_z_on_l, &
@@ -75,6 +78,7 @@ module um_physics_init_mod
                                         falliceshear_method,                  &
                                         falliceshear_method_real,             &
                                         falliceshear_method_constant,         &
+                                        falliceshear_method_off,              &
                                         subgrid_qv, ice_width_in => ice_width,&
                                     ent_coef_bm_in => ent_coef_bm,             &
                                     ez_max,                                    &
@@ -96,6 +100,10 @@ module um_physics_init_mod
                                         cv_scheme_comorph,            &
                                         number_of_convection_substeps,&
                                         cape_timescale_in => cape_timescale, &
+                                        qlmin_in => qlmin,                   &
+                                        efrac_in => efrac,                   &
+                                        prog_ent_min_in => prog_ent_min,     &
+                                        orig_mdet_fac_in => orig_mdet_fac,   &
                                      par_gen_mass_fac_in => par_gen_mass_fac, &
                                      par_gen_rhpert_in => par_gen_rhpert,     &
                                      par_radius_ppn_max_in => par_radius_ppn_max
@@ -114,6 +122,7 @@ module um_physics_init_mod
                                         ndrop_surf_in => ndrop_surf,         &
                                         z_surf_in => z_surf,                 &
                                         turb_gen_mixph,                      &
+                                        mp_dz_scal_in => mp_dz_scal,         &
                                         orog_rain, orog_rime,                &
                                         prog_tnuc, orog_block,               &
                                         fcrit_in => fcrit,                   &
@@ -238,15 +247,11 @@ module um_physics_init_mod
   integer(i_def), protected :: mode_dimen
   integer(i_def), protected :: sw_band_mode
   integer(i_def), protected :: lw_band_mode
-  real(r_def), protected :: fsd_min_conv_frac
-  real(r_def), protected :: fsd_conv_const
-  real(r_def), protected :: fsd_nonconv_const
 
   private
   public :: um_physics_init, &
             n_radaer_mode, mode_dimen, sw_band_mode, lw_band_mode, &
-            n_aer_mode_sw, n_aer_mode_lw, fsd_min_conv_frac, fsd_conv_const, &
-            fsd_nonconv_const
+            n_aer_mode_sw, n_aer_mode_lw
 
 contains
 
@@ -391,8 +396,8 @@ contains
     use initialize, only: mphys_init
     use generic_diagnostic_variables, only: casdiags
     use pc2_constants_mod, only: i_cld_off, i_cld_smith, i_cld_pc2,        &
-                                 i_cld_bimodal, rhcpt_off, acf_off, real_shear, rhcpt_tke_based,   &
-         pc2eros_exp_rh,pc2eros_hybrid_sidesonly,                          &
+         i_cld_bimodal, rhcpt_off, acf_off, real_shear, rhcpt_tke_based,   &
+         pc2eros_exp_rh,pc2eros_hybrid_sidesonly, ignore_shear,            &
          original_but_wrong, acf_cusack, cbl_and_cu, pc2init_smith,        &
          pc2init_logic_original, pc2init_bimodal, i_pc2_homog_g_cf,        &
          forced_cu_cca, i_pc2_homog_g_width, pc2init_logic_smooth
@@ -564,7 +569,7 @@ contains
       end select
 
       dec_thres_cloud = real(dec_thres_cloud_in, r_bl)
-      dec_thres_cu = 0.5_r_bl * dec_thres_cloud
+      dec_thres_cu = real(dec_thres_cu_in, r_bl)
       entr_smooth_dec = on
 
       select case (flux_bc_opt_in)
@@ -701,7 +706,7 @@ contains
       l_param_conv = .true.
       fac_qsat     = 0.350_r_um
       mparwtr      = 1.0000e-3_r_um
-      qlmin        = 4.0000e-4_r_um
+      qlmin        = qlmin_in
 
       ! Options which are bespoke to the choice of scheme
       select case (cv_scheme)
@@ -797,7 +802,7 @@ contains
         deep_cmt_opt        = 6
         eff_dcff            = 3.0_r_um
         eff_dcfl            = 1.0_r_um
-        efrac               = 1.0_r_um
+        efrac               = efrac_in
         ent_dp_power        = 1.00_r_um
         ent_fac_md          = 1.00_r_um
         ent_opt_dp          = 7
@@ -841,11 +846,11 @@ contains
         tau_conv_prog_dq    =  2700.0_r_um
         prog_ent_grad       = -1.1_r_um
         prog_ent_int        = -2.9_r_um
-        prog_ent_min        = 0.5_r_um
+        prog_ent_min        = prog_ent_min_in
         prog_ent_max        = 2.5_r_um
         ent_fac_sh          = 1.0_r_um
         c_mass_sh           = 0.03_r_um
-        orig_mdet_fac       = 1.0_r_um
+        orig_mdet_fac       = orig_mdet_fac_in
 
       case(cv_scheme_lambert_lewis)
         i_convection_vn   = i_cv_llcs
@@ -921,6 +926,8 @@ contains
       ! Options needed by all cloud schemes
       cff_spread_rate = real(cff_spread_rate_in, r_um)
       select case (falliceshear_method_in)
+        case(falliceshear_method_off)
+          falliceshear_method = ignore_shear
         case(falliceshear_method_constant)
           falliceshear_method = original_but_wrong
         case(falliceshear_method_real)
@@ -1031,9 +1038,9 @@ contains
          ( glomap_mode == glomap_mode_dust_and_clim ) ) then
       i_dust = i_dust_flux
       dust_veg_emiss = 1
-      us_am = 1.45_r_um              ! Increases friction velocity
+      us_am = us_am_in
       sm_corr = 0.5_r_um             ! Reduces soil moisture
-      horiz_d = 2.25_r_um
+      horiz_d = horiz_d_in
       l_fix_size_dist = .false.
       l_twobin_dust = .false.
       l_dust_emp_sc = .false.
@@ -1085,7 +1092,7 @@ contains
       l_mphys_nonshallow = .true.
       l_rain         = .true.
       l_subgrid_qcl_mp = turb_gen_mixph
-      mp_dz_scal     = 2.0_r_um
+      mp_dz_scal     = real(mp_dz_scal_in, r_um)
 
       ! Domain top used in microphysics - contained in mphys_bypass_mod
       mphys_mod_top  = real(domain_height, r_um)
@@ -1338,17 +1345,6 @@ contains
         f_cons(1)      =  0.016_r_um
         f_cons(2)      =  2.76_r_um
         f_cons(3)      = -0.09_r_um
-
-        ! Parameters used in the convective inhomogeneity parametrization
-        if (cv_scheme == cv_scheme_comorph) then
-          fsd_min_conv_frac = 0.02_r_def
-          fsd_conv_const    = 3.0_r_def
-          fsd_nonconv_const = 0.8_r_def
-        else
-          fsd_min_conv_frac = 0.0_r_def
-          fsd_conv_const    = 2.81_r_def
-          fsd_nonconv_const = 1.14_r_def
-        end if
 
       end if
 

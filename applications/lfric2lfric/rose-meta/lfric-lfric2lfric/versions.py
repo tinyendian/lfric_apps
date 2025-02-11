@@ -267,3 +267,56 @@ class vn20_t450(MacroUpgrade):
         self.remove_setting(config, ["namelist:lfric2lfric", "chain_mesh_tags"])
 
         return config, self.reports
+
+
+class vn20_t334(MacroUpgrade):
+    """Upgrade macro for ticket #334 by Ian Boutle."""
+
+    BEFORE_TAG = "vn2.0_t450"
+    AFTER_TAG = "vn2.0_t334"
+
+    def upgrade(self, config, meta_config=None):
+        # Commands From: science/um_physics_interface/rose-meta/um-microphysics
+        self.add_setting(config, ["namelist:microphysics", "mp_dz_scal"], "2.0")
+
+        # Commands From: science/um_physics_interface/rose-meta/um-convection
+        self.add_setting(config, ["namelist:convection", "efrac"], "1.0")
+        self.add_setting(
+            config, ["namelist:convection", "orig_mdet_fac"], "1.0"
+        )
+        self.add_setting(config, ["namelist:convection", "prog_ent_min"], "0.5")
+        self.add_setting(config, ["namelist:convection", "qlmin"], "4.0e-4")
+
+        # Commands From: science/um_physics_interface/rose-meta/um-cloud
+        cvscheme = self.get_setting_value(
+            config, ["namelist:convection", "cv_scheme"]
+        )
+        if cvscheme == "'comorph'":
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_conv_const"], "3.0"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_min_conv_frac"], "0.02"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_nonconv_const"], "0.8"
+            )
+        else:
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_conv_const"], "2.81"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_min_conv_frac"], "0.0"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_nonconv_const"], "1.14"
+            )
+
+        # Commands From: science/um_physics_interface/rose-meta/um-boundary_layer
+        self.add_setting(config, ["namelist:blayer", "dec_thres_cu"], "0.05")
+
+        # Commands From: science/um_physics_interface/rose-meta/um-aerosol
+        self.add_setting(config, ["namelist:aerosol", "horiz_d"], "2.25")
+        self.add_setting(config, ["namelist:aerosol", "us_am"], "1.45")
+
+        return config, self.reports

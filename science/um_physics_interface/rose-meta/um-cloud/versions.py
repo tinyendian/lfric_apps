@@ -55,5 +55,39 @@ class vn20_t481(MacroUpgrade):
         self.add_setting(config, [nml, "max_sigmas"], "3.0")
         self.add_setting(config, [nml, "min_sigx_ft"], "0.0")
         self.add_setting(config, [nml, "turb_var_fac_bm"], "1.0")
+        return config, self.reports
+
+
+class vn20_t334(MacroUpgrade):
+    """Upgrade macro for ticket #334 by Ian Boutle."""
+
+    BEFORE_TAG = "vn2.0_t481"
+    AFTER_TAG = "vn2.0_t334"
+
+    def upgrade(self, config, meta_config=None):
+        # Commands From: science/um_physics_interface/rose-meta/um-cloud
+        cvscheme = self.get_setting_value(
+            config, ["namelist:convection", "cv_scheme"]
+        )
+        if cvscheme == "'comorph'":
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_conv_const"], "3.0"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_min_conv_frac"], "0.02"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_nonconv_const"], "0.8"
+            )
+        else:
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_conv_const"], "2.81"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_min_conv_frac"], "0.0"
+            )
+            self.add_setting(
+                config, ["namelist:cloud", "fsd_nonconv_const"], "1.14"
+            )
 
         return config, self.reports
