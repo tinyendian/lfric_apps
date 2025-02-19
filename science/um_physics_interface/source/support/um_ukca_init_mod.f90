@@ -40,6 +40,10 @@ module um_ukca_init_mod
   use water_constants_mod, only: tfs, rho_water, rhosea, latent_heat_cw => lc
   use chemistry_constants_mod, only: avogadro, boltzmann, rho_so4
 
+  ! Callback module to interface with parent-specific routines needed
+  ! by UKCA
+  use lfric_ukca_callback_mod, only: bl_tracer_mix
+
   ! UM modules containing things that needs setting and setup routines
   use mphys_diags_mod, only: l_praut_diag, l_pracw_diag, l_piacw_diag,         &
                              l_psacw_diag
@@ -50,7 +54,6 @@ module um_ukca_init_mod
 
   ! Other UM modules used
   use dms_flux_mod_4a,      only: i_liss_merlivat
-  use atmos_ukca_callback_mod, only: bl_tracer_mix
 
   ! JULES modules used
   use jules_soil_mod,          only: dzsoil_io
