@@ -5,42 +5,41 @@
 {# ########################################################################### #}
 {% do LOG.debug("Entered site/meto/common/suite_config_lfric_coupled.cylc") %}
 
-{% set xc40_coupled_base = 'umask 0022 ; '~
-                           'module use /data/d00/moci/MODULES_GC5/modules ; '~
-                           'module use /data/d03/lfric/modules/modulefiles ; '~
-                           'module load meto-gmake/4.3' %}
+{% set ex1a_coupled_base = "module use /common/internal/spack/ngms ; " ~
+                           "module switch PrgEnv-cray PrgEnv-cray/8.4.0 ; " ~
+                           "module load cpe/23.05 ; "~
+                           "module switch cce cce/15.0.0 ; "~
+                           "module load lfric-cray/15.0.0/0.5 ; "~
+                           "export LD_LIBRARY_PATH=/opt/cray/pe/pmi/6.1.11/lib:$LD_LIBRARY_PATH" %}
 
-{% if site_vars["meto_xc40"] == "xcs" %}
-    {% set xc40_coupled_base = 'umask 0022 ; '~
-                               'module use /data/d00/moci/MODULES_GC5/modules ; '~
-                               'module use /common/lfric/modules/modulefiles ; '~
-                               'module load meto-gmake/4.3' %}
-{% endif %}
+{% set ex1a_coupled_cce = "module unload xios/2252-o4pd7wo; module load cray-hdf5-parallel; module load cray-netcdf-hdf5parallel; module use /data/users/moci/modules_ngms/modules; module load GC4-PrgEnv/2024-01-lfric_apps_coupled_port-cpe23.05/5548.lua;" %}
 
-{% set xc40_coupled_intel = 'module load GC5-PrgEnv/intel/17.0.0.098/2024-12-ifort/5551' %}
-{% if site_vars["meto_xc40"] == "xcs" %}
-    {% set xc40_coupled_intel = 'module load GC5-PrgEnv/intel/17.0.0.098/2024-12-ifort/5552' %}
-{% endif %}
 
-{% set xc40_coupled_setup = 'module load cray-snplauncher/${CRAY_MPICH2_VER}' %}
 
-{% set xc40_coupled_run = '. /projects/ocean/nemo/ocean_ancil_versions/GO8/ocean_ancil_GO8p0_CORE_forcing_eORCA025 ; '~
+{% set ex1a_coupled_setup = 'module list ; echo $FFLAGS ; echo $LDFLAGS' %}
+
+{% set ex1a_coupled_run = '. $BIG_DATA_DIR/ancils/lfric_coupled/ocean/ocean_ancil_GO8p0_CORE_forcing_eORCA025 ; '~
                           'DIAG_MEAN_PERIOD="INVALID_PERIOD" ; '~
+                          'export HDF5_DEBUG=all; ' ~
+                          'export MPICH_ENV_DISPLAY=1; '~
+                          'export FI_CXI_RX_MATCH_MODE=software; '~
+                          'export FI_CXI_REQ_BUF_SIZE=12582912; '~
+                          'export MPICH_COLL_SYNC=1; '~
                           'ulimit -s unlimited' %}
 
-    [[XC40_COUPLED_BUILD_INTEL]]
-        inherit=XC40_BASE,XC40_BUILD,XC40_INTEL
-        {{ generate_script("pre-script", [xc40_coupled_base,
-                                          xc40_coupled_intel,
-                                          xc40_coupled_setup]) }}
+    [[EX1A_COUPLED_BUILD_CCE]]
+        inherit=EX1A_BASE,EX1A_BUILD,EX1A_CCE
+        {{ generate_script("pre-script", [ex1a_coupled_base,
+                                          ex1a_coupled_cce,
+                                          ex1a_coupled_setup]) }}
 
 
-    [[XC40_COUPLED_RUN_INTEL]]
-        inherit=XC40_BASE,XC40_RUN,XC40_INTEL
-        {{ generate_script("pre-script", [xc40_coupled_base,
-                                          xc40_coupled_intel,
-                                          xc40_coupled_setup,
-                                          xc40_coupled_run]) }}
+    [[EX1A_COUPLED_RUN_CCE]]
+        inherit=EX1A_BASE,EX1A_RUN,EX1A_CCE
+        {{ generate_script("pre-script", [ex1a_coupled_base,
+                                          ex1a_coupled_cce,
+                                          ex1a_coupled_setup,
+                                          ex1a_coupled_run]) }}
 
     [[METO_FCM_MAKE]]
         platform = spice

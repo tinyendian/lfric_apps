@@ -11,7 +11,7 @@
 
 {% if task_values["ocean_nodes"] > 0 %}
     {% set ocean_ppnu =(task_values["nemo_nproc"]/task_values["ocean_nodes"]/2)|round(0,'ceil')|int %}
-            ROSE_LAUNCHER_PREOPTS_NEMO = -n {{task_values["nemo_nproc"]}} -N {{2*ocean_ppnu}} -S {{ocean_ppnu}} -d {{task_values["ocean_threads"]}} -j 1 env OMP_NUM_THREADS={{task_values["ocean_threads"]}} env HYPERTHREADS=1
+            ROSE_LAUNCHER_PREOPTS_NEMO = -n {{task_values["nemo_nproc"]}} -ppn 128
 {% endif %}
             OCEAN_SEAICE_TIMESTEPS_PER_DAY = {{task_values["ocean_seaice_timesteps_per_day"]}}
             OCEAN_SEAICE_SECONDS_PER_TIMESTEP = {{task_values["ocean_seaice_seconds_per_timestep"]}}
@@ -40,7 +40,7 @@
 
 {# river environment variables #}
 
-            ROSE_LAUNCHER_PREOPTS_RIVER = -n 1 -N 1 -S 1 -d 1 -j 1
+            ROSE_LAUNCHER_PREOPTS_RIVER = -n 1 -ppn 1
             GSWP2_INSTALL_DIR = {{task_values["gswp_install_dir"]}}
             RIVERS_ONLY_DRIVE_TASK = {{task_values["rivers_only_drive_task"]}}
             RIVERS_ONLY_INSTALL_DIR = {{task_values["rivers_only_install_dir"]}}
@@ -50,7 +50,7 @@
 
 {# other environment variables #}
 
-            ROSE_LAUNCHER_PREOPTS_LFRIC = -n {{task_values["mpi_parts"]}}
+            ROSE_LAUNCHER_PREOPTS_LFRIC = -n {{task_values["mpi_parts"]}} -ppn 24
             CONFIG_NL_PATH_LFRIC  = configuration.nml
             DIAG_MEAN_PERIOD = {{task_values["diag_mean_period"]}}
             LFRIC_EXEC = $BIN_DIR/{{task_ns.application}}
@@ -67,7 +67,7 @@
             XIOS_NPROC = {{task_values["xios_server_ranks"]}}
     {% if task_values["xios_server_ranks"] > 0 %}
         {% set xios_ppnu = (task_values["xios_server_ranks"]/task_values["xios_nodes"]/2)|round(0,'ceil')|int %}
-            ROSE_LAUNCHER_PREOPTS_XIOS  = -n {{task_values["xios_server_ranks"]}} -N {{2*xios_ppnu}} -S {{xios_ppnu}} -d 1 -j 1 env OMP_NUM_THREADS=1 env HYPERTHREADS=1
+            ROSE_LAUNCHER_PREOPTS_XIOS  = -n {{task_values["xios_server_ranks"]}} -ppn {{task_values["xios_server_ranks"]}}
     {% endif %}
 
 {% do LOG.debug("Finished in templates/runtime/coupled_task_environment.cylc") %}

@@ -31,7 +31,7 @@
 
 {# Caution: This default assumes running at the MO #}
 {% if "gswp_install_dir" not in task_dict %}
-    {% do task_dict.update({"gswp_install_dir": "/projects/jules/datasets/gswp2"}) %}
+    {% do task_dict.update({"gswp_install_dir": "/common/internal/jules/datasets/gswp2"}) %}
 {% endif %}
 
 {# Caution: This default assumes running at the MO #}
@@ -72,7 +72,7 @@
 
 {# Caution: This default assumes running at the MO #}
 {% if "oceandir" not in task_dict %}
-    {% do task_dict.update({"oceandir": "/projects/ocean"}) %}
+    {% do task_dict.update({"oceandir": "/common/internal/ocean"}) %}
 {% endif %}
 
 {% if "ocean_seaice_timesteps_per_day" not in task_dict %}
@@ -87,9 +87,9 @@
     {% do task_dict.update({"ocean_threads": 1}) %}
 {% endif %}
 
-{# Caution: This default assumes running on the MO xc40s #}
+{# Caution: This default assumes running on the MO ex1a #}
 {% if "ppn" not in task_dict %}
-    {% do task_dict.update({"ppn": 36}) %}
+    {% do task_dict.update({"ppn": 128}) %}
 {% endif %}
 
 {% if "ocean_make_dir" not in task_dict %}
