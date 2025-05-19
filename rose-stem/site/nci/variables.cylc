@@ -25,4 +25,6 @@
 
 {% include "site/nci/kgo_variables.cylc" %}
 
+{% include "site/nci/common/default_directives.cylc" %}
+
 {% do LOG.debug("Finished in site/nci/variables.cylc") %}

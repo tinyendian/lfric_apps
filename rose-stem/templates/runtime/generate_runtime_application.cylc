@@ -80,6 +80,7 @@
         inherit={{inherit.str|upper}}
         script = {{script_str.name}}
         {{ generate_script("post-script", post_script_commands) }}
+        execution time limit = PT{{task_values["wallclock"]}}M
         [[[environment]]]
             DESTINATION_DIRECTORY   = {{destination_dir}}
             APPS_ROOT_DIR           = $SOURCE_ROOT/apps
@@ -132,26 +133,19 @@
         [[[directives]]]
 
 {% if task_ns.application == "lfric_coupled" %}
-    {{ set_task_cores(task_values["mpi_parts"],
+    {{ set_task_resources(task_values["mpi_parts"],
+                      task_values["memory"],
                       threads=task_values["threads"],
                       xios_nodes=task_values["xios_nodes"],
                       ocean_nodes=task_values["ocean_nodes"],
                       river_nodes=task_values["river_nodes"],
                       ranks_per_node=task_values["task_ranks_per_node"]) }}
 {% else %}
-    {{ set_task_cores(task_values["mpi_parts"],
+    {{ set_task_resources(task_values["mpi_parts"],
+                      task_values["memory"],
                       threads=task_values["threads"],
                       xios_nodes=task_values["xios_nodes"],
                       ranks_per_node=task_values["task_ranks_per_node"]) }}
-{% endif %}
-
-
-{% if "wallclock" in task_values %}
-    {{ set_wallclock(task_values["wallclock"]) }}
-{% endif %}
-
-{% if "memory" in task_values %}
-    {{ set_memory(task_values["memory"]) }}
 {% endif %}
 
 {% do LOG.debug("Finished in templates/runtime/generate_runtime_application.cylc") %}

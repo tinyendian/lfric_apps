@@ -35,26 +35,15 @@
             CORES_PER_NODE  = 128
             NUMA_REGIONS_PER_NODE = 2
             LUSTRE_FILESYSTEM = true
-
-    [[EX1A_SHARED_QUEUE]]
-        [[[environment]]]
-        ROSE_LAUNCHER = 'mpiexec'
-
-    [[EX1A_NORMAL_QUEUE]]
-        [[[environment]]]
             ROSE_LAUNCHER = 'mpiexec'
 
     [[EX1A_BUILD]]
-        inherit=EX1A_SHARED_QUEUE
         [[[environment]]]
             TRANSMUTE_INCLUDE_METHOD = specify_include
         [[[directives]]]
-            -l select=1:ncpus=24:mem=40GB:tmpsize=12GB
-            -l walltime=01:00:00
-            -q=shared
+            -l tmpsize=12GB
 
     [[EX1A_RUN]]
-        inherit=EX1A_NORMAL_QUEUE
         [[[environment]]]
             {# BIG_DATA_DIR holds ancils and dump files #}
 {% if site_vars["host_ex"] == "exz" %}
@@ -64,10 +53,6 @@
 {% endif %}
             TARGET_PLATFORM = 'meto-ex1a'
             RUN_METHOD = 'mpiexec'
-        [[[directives]]]
-            -l select=1
-            -l walltime=00:10:00
-            -q=normal
 
     [[EX1A_GNU]]
         [[[environment]]]
@@ -84,8 +69,6 @@
     [[EX1A_BUILD_CCE]]
         inherit=EX1A_BASE,EX1A_BUILD,EX1A_CCE
         {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_cce]) }}
-        [[[directives]]]
-            -l walltime = 02:55:00
 
     [[EX1A_BUILD_PERFTOOLS-GNU]]
         inherit=EX1A_BASE,EX1A_BUILD,EX1A_GNU
@@ -104,11 +87,9 @@
         {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_gnu, set_ulimit, ex1a_perftools]) }}
 
     [[EX1A_MESH]]
-        inherit=EX1A_BASE,EX1A_SHARED_QUEUE
+        inherit=EX1A_BASE
         [[[directives]]]
-            -l select=1:ncpus=1:mem=6GB:tmpsize=6GB
-            -l walltime=00:10:00
-            -q=shared
+            -l tmpsize=6GB
 
     [[EX1A_MESH_GNU]]
         inherit=EX1A_GNU,EX1A_MESH
@@ -131,11 +112,9 @@
                                           ex1a_perftools]) }}
 
     [[EX1A_TECH_BASE]]
-        inherit=EX1A_BASE,EX1A_SHARED_QUEUE
+        inherit=EX1A_BASE
         [[[directives]]]
-            -l select=1:ncpus=1:mem=6GB:tmpsize=6GB
-            -l walltime=00:20:00
-            -q=shared
+            -l tmpsize=6GB
 
     [[EX1A_TECH_TESTS]]
         inherit=EX1A_TECH_BASE

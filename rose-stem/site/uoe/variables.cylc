@@ -15,4 +15,6 @@
 {% do site_vars.update({"mesh_build": {"epic": "gnu_fast-debug-64bit",
                                        "dial3": "gnu_fast-debug-64bit"} }) %}
 
+{% include "site/uoe/common/default_directives.cylc" %}
+
 {% do LOG.debug("Finished in site/uoe/variables.cylc") %}

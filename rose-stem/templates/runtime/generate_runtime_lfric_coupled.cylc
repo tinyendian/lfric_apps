@@ -35,6 +35,8 @@
             ROSE_TASK_APP = {{task_app}}
             JULES_SOURCE = {{jules_source}}
             JULES_REV = {{jules_rev}}
+        [[[directives]]]
+    {{ set_task_resources(task_values["build_cpus"], task_values["build_memory"]) }}
 
 {% else %}
 {# The first build stage for 2-step builds #}

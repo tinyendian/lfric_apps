@@ -28,9 +28,6 @@
 
     [[AZSPICE_BUILD]]
         [[[directives]]]
-            --time=00:45:00
-            --ntasks=6
-            --mem-per-cpu=1G
             --gres=tmp:1024
             --export=NONE
 
@@ -41,8 +38,6 @@
             TARGET_PLATFORM = 'meto-azspice'
             RUN_METHOD = mpiexec
         [[[directives]]]
-            --time=00:10:00
-            --mem-per-cpu=4G
             --export=NONE
 
     [[AZSPICE_GNU]]
@@ -60,9 +55,6 @@
     [[AZSPICE_MESH]]
         inherit=AZSPICE_BASE
         [[[directives]]]
-            --time=00:20:00
-            --ntasks=6
-            --mem-per-cpu=1G
             --export=NONE
 
     [[AZSPICE_MESH_GNU]]
@@ -74,9 +66,6 @@
     [[AZSPICE_TECH_BASE]]
         inherit=AZSPICE_BASE
         [[[directives]]]
-            --time=00:15:00
-            --ntasks=1
-            --mem-per-cpu=1G
             --export=NONE
 
     [[AZSPICE_TECH_TESTS]]

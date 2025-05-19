@@ -7,13 +7,8 @@
 
 {% set ex_cores_per_node = 128 %}
 
-{% macro set_wallclock(time) %}
-{# macro to set wallclock - input is in minutes #}
-            --time=00:{{time|int}}:00
-{% endmacro %}
-
-
-{% macro set_task_cores(mpi_ranks,
+{% macro set_task_resources(mpi_ranks,
+                        memory,
                         threads=1,
                         xios_nodes=0,
                         ocean_nodes=0,

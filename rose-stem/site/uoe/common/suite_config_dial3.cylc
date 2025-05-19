@@ -29,8 +29,6 @@
         [[[directives]]]
             --account=dp015
             --partition=devel
-            --time=00:29:00
-            --ntasks=6
 
     [[DIAL3_RUN]]
         [[[environment]]]
@@ -41,8 +39,6 @@
         [[[directives]]]
             --account=dp015
             --partition=devel
-            --time=00:19:00
-#            --ntasks=6
 
     [[DIAL3_GNU]]
         [[[environment]]]
@@ -61,8 +57,6 @@
         [[[directives]]]
             --account=dp015
             --partition=devel
-            --time=00:19:00
-            --ntasks=6
 
     [[DIAL3_MESH_GNU]]
         inherit=DIAL3_GNU,DIAL3_MESH

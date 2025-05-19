@@ -8,18 +8,12 @@
 {% set ex1a_cores_per_node = 128 %}
 {% set ex1a_socket_per_node = 2 %}
 
-{% macro set_wallclock(time) %}
-{# macro to set wallclock - input is in minutes #}
-            -l walltime=00:{{time|int}}:00
-{% endmacro %}
-
-
-{% macro set_task_cores(mpi_ranks,
-                        threads=1,
-                        xios_nodes=0,
-                        ocean_nodes=0,
-                        river_nodes=0,
-                        ranks_per_node=0) %}
+{% macro normal_queue(mpi_ranks,
+                        threads,
+                        xios_nodes,
+                        ocean_nodes,
+                        river_nodes,
+                        ranks_per_node) %}
     {# If an override is set on ex1a #}
     {% if (ranks_per_node > 0) and ((ranks_per_node|int * threads|int) <= ex1a_cores_per_node|int) %}
         {% set lfric_nodes = (mpi_ranks|float / ranks_per_node|float)|round(0, 'ceil')|int %}
@@ -65,10 +59,40 @@
         {% set lfric_nodes = possible_nodes %}
 
     {% endif %}
+            -q=normal
             -l select={{ lfric_nodes +
                          ocean_nodes|int +
                          river_nodes|int +
                          xios_nodes|int }}
+{% endmacro %}
+
+
+{% macro shared_queue(cores) %}
+            -q=shared
+            -l ncpus={{ cores }}
+
+{% endmacro %}
+
+
+{% macro set_task_resources(mpi_ranks,
+                        memory,
+                        threads=1,
+                        xios_nodes=0,
+                        ocean_nodes=0,
+                        river_nodes=0,
+                        ranks_per_node=0) %}
+
+    {% set total_other_ranks = xios_nodes + ocean_nodes + river_nodes %}
+    {% set lfric_cores = mpi_ranks * threads %}
+    {% if lfric_cores >= ex1a_cores_per_node or total_other_ranks > 0 %}
+        {# This needs to be run on the normal queue #}
+        {{ normal_queue(mpi_ranks, threads, xios_nodes, ocean_nodes, river_nodes, ranks_per_node) }}
+    {% else %}
+        {# This is small enough to run on the shared queue #}
+        {{ shared_queue(mpi_ranks * threads) }}
+        {{ set_memory(memory) }}
+    {% endif %}
+
 {% endmacro %}
 
 

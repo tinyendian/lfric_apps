@@ -134,11 +134,10 @@
             GRID_TYPE_LFRIC = {{task_values["source_grid_type"]}}
     {% endif %}
         [[[directives]]]
-            {{ set_task_cores(8) }}
-            {{ set_memory([16, "GB"])}}
+            {{ set_task_resources(8, [16, "GB"]) }}
 
 {% elif task.startswith("run") %}
-{# Uum2lfric, lfric2um or scintel #}
+{# um2lfric, lfric2um or scintel #}
 
     {% set opt_confs = namespace(vals=task_values["opt_confs"][0]) %}
     {% for opt_conf in task_values["opt_confs"][1:] %}

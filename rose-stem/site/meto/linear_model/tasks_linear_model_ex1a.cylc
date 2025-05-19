@@ -7,10 +7,10 @@
 
 {# Currently, random seed is not initialised properly, leading to different #}
 {# results run-to-run #}
-
 {% if task_ns.conf_name == "nwp_gal9_random-C12" %}
     {% do task_dict.update({
         "kgo_checks": [],
     }) %}
 {% endif %}
+
 {% do LOG.debug("Finished in site/meto/linear_model/tasks_linear_model_ex1a.cylc") %}

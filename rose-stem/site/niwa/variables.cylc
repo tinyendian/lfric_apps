@@ -18,4 +18,6 @@
 
 {% do site_vars.update({"housekeeping_platform": "cs500"}) %}
 
+{% include "site/niwa/common/default_directives.cylc" %}
+
 {% do LOG.debug("Finished in site/niwa/variables.cylc") %}

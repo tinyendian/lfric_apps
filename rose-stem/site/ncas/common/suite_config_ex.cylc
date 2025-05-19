@@ -34,15 +34,12 @@
         [[[directives]]]
             --partition=serial
             --qos=serial
-            --mem=25GB
-            --time=04:00:00
 
     [[EX_STANDARD_QUEUE]]
         inherit = EX_SLURM
         [[[directives]]]
             --partition=standard
             --qos=standard
-            --time=01:00:00
 
     [[EX_SHORT_QUEUE]]
         inherit = EX_SLURM
@@ -50,14 +47,11 @@
             --partition=standard
             --reservation=shortqos
             --qos=short
-            --time=00:20:00
 
     [[EX_BUILD]]
         inherit=EX_SERIAL_QUEUE
         [[[environment]]]
             PSYCLONE_TRANSFORMATION="meto-ex1a"
-        [[[directives]]]
-             --ntasks=4
 
     [[EX_GNU]]
         pre-script = """

@@ -30,6 +30,18 @@
         "wallclock": 5,
     }) %}
 
+{% elif task_ns.conf_name == "clim_gal9_nomg-C12" %}
+
+    {% do task_dict.update({
+        "memory": [8, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "clim_gal9_chem-C12" %}
+
+    {% do task_dict.update({
+        "memory": [8, "GB"],
+    }) %}
+
 {% endif %}
 
 {% do LOG.debug("Finised in site/meto/lfric_atm/tasks_lfric_atm_azspice.cylc") %}

@@ -8,9 +8,8 @@
 {# Generate runtime section for scripts #}
 
 {# Import macros to set custom directive values for this platform #}
-{% from "site/"~SITE~"/macros/macros_"~site_vars["scripts_platform"]~".cylc" import
-    set_wallclock,
-    set_memory
+{% from "site/"~SITE~"/macros/macros_"~site_vars['scripts_platform']~".cylc" import
+    set_task_resources,
     with context %}
 
 {# Set the family inheritance for this task #}
@@ -24,16 +23,18 @@
 {% for family in task_values["script_families"] %}
     {% set inherit.str = inherit.str~","~family|upper %}
 {% endfor %}
-{# Remove leading commas  #}
+{# Remove leading commas #}
 {% set inherit.str = inherit.str|trim(",") %}
 
 {# ######################## #}
 {# Scripts Runtime Sections #}
 {# ######################## #}
 
+    [[{{task}}]]
+        execution time limit = PT15M
+
 {% if "export_simsys_scripts" in task %}
 
-    [[{{task}}]]
         inherit=EXPORT-SOURCE
         script="rose task-run --app-key=export_simsys_scripts"
         [[[environment]]]
@@ -41,37 +42,31 @@
 
 {% elif "config_dump_checker" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=check_config_dump"
 
 {% elif "style_checker" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=check_style"
 
 {% elif "extract_checker" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=extract_list_checker"
 
 {% elif "site_validator" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=site_validator"
 
 {% elif "rose-stem_lint_checker" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=rose-stem_lint_check"
 
 {% elif "test_launch-exe" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=test_launch-exe"
         [[[environment]]]
@@ -85,7 +80,6 @@
 
 {% elif "validate_rose_meta" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=validate_rose_meta"
         [[[environment]]]
@@ -94,7 +88,6 @@
 
 {% elif "kgo_groups_checker" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=check_kgo_groups"
         {% set group_str = RUN_NAMES|join(",") %}
@@ -104,13 +97,11 @@
 
 {% elif "global_variables_checker" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=check_global_variables"
 
 {% elif "python_unit_tests" in task %}
 
-    [[{{task}}]]
         inherit={{inherit.str|upper}}
         script="rose task-run --app-key=python_unit_tests"
 
@@ -123,8 +114,8 @@
         {% set local_build_inherit = "SCRIPTS,"~site_vars["scripts_platform"]|upper~"_BUILD_INTEL" %}
     {% endif %}
 
-    [[{{task}}]]
         inherit={{local_build_inherit|upper}}
+        execution time limit = PT25M
         script = """
                  cp -r $CYLC_WORKFLOW_SHARE_DIR/source/apps $CYLC_TASK_WORK_DIR/apps_local_build_source
                  cp -r $CYLC_WORKFLOW_SHARE_DIR/source/core $CYLC_TASK_WORK_DIR/core_local_build_source
@@ -143,12 +134,10 @@
 {# Directives Macros #}
 {# If this script task has any directives specified at this site, update those #}
         [[[directives]]]
-{% if "wallclock" in task_values %}
-    {{ set_wallclock(task_values["wallclock"]) }}
-{% endif %}
-
-{% if "memory" in task_values %}
-    {{ set_memory(task_values["memory"]) }}
+{% if "local_build_test" in task %}
+    {{ set_task_resources(6, [1, "GB"]) }}
+{% else %}
+    {{ set_task_resources(1, [1, "GB"]) }}
 {% endif %}
 
 {% do LOG.debug("Finished in templates/runtime/generate_runtime_scripts.cylc") %}

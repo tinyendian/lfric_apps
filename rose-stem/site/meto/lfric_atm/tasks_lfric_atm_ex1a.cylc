@@ -54,49 +54,75 @@
 {% elif task_ns.conf_name == "nwp_gal9-C48_MG" %}
     {% do task_dict.update({
         "mpi_parts": 54,
+        "memory": [48, "GB"],
     }) %}
 
-{% endif %}
+{% elif task_ns.conf_name == "clim_gal9_chem-C12" %}
 
-{# Set default values #}
-{% if task_dict %}
-    {% if ("full-debug" in task) and ("build_lfric_atm" not in task) %}
-        {% if "wallclock" not in task_dict  %}
-            {% do task_dict.update({"wallclock": 15}) %}
-        {% else %}
-            {% set val = 1.5 * task_dict["wallclock"] %}
-            {% do task_dict.update({"wallclock": val}) %}
-        {% endif %}
-    {% endif %}
-{% endif %}
-{% if task_ns.conf_name == "nwp_gal9_debug-C12" %}
     {% do task_dict.update({
-        "kgo_checks": [],
+        "memory": [24, "GB"],
     }) %}
+
+{% elif task_ns.conf_name == "clim_gal9_nomg-C12" %}
+
+    {% do task_dict.update({
+        "memory": [24, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "nwp_gal9_coarse_aero_threaded-C48_MG" %}
+
+    {% do task_dict.update({
+        "memory": [24, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "nwp_gal9_coarse_aero-C48_MG" %}
+
+    {% do task_dict.update({
+        "memory": [36, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "nwp_gal9_debug-C48_MG" %}
+
+    {% do task_dict.update({
+        "memory": [36, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "nwp_gal9_mgnoukca-C48_MG" %}
+
+    {% do task_dict.update({
+        "memory": [36, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "ral3_ens-seuk_MG" %}
+
+    {% do task_dict.update({
+        "memory": [24, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "ral3_mixmol-seuk_MG" %}
+
+    {% do task_dict.update({
+        "memory": [24, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "ral3-seuk_MG" %}
+
+    {% do task_dict.update({
+        "memory": [24, "GB"],
+    }) %}
+
+{% elif task_ns.conf_name == "thai_ben1-C48_MG" %}
+
+    {% do task_dict.update({
+        "memory": [24, "GB"],
+    }) %}
+
 {% endif %}
 
 {% if "perftools" in task_ns.compiler %}
     {% do task_dict.update({
         "kgo_checks": [],
         "plot_str": "", }) %}
-{% endif %}
-
-{# Turn off XIOS servers}
-{% do task_dict.update({
-    "xios_nodes": 0,
-    "mpi_parts_xios": 0, }) %}
-
-{# For full-debug runs, turn off KGO tests, plotting tasks and CRUNS, and #}
-{# reduce the number of timesteps                                         #}
-{% if task_dict %}
-    {% if "full-debug" in task %}
-        {% do task_dict.update({
-            "tsteps": 6,
-            "crun": 1,
-            "kgo_checks": [],
-            "plot_str": "",
-        }) %}
-    {% endif %}
 {% endif %}
 
 {% do LOG.debug("Finised in site/meto/lfric_atm/tasks_lfric_atm_ex1a.cylc") %}

@@ -5,6 +5,6 @@
 {# ########################################################################### #}
 {% do LOG.debug("Entered site/meto/jedi_lfric_tests/tasks_jedi_lfric_tests_azspice.cylc") %}
 
-{# Set default values for JEDI-LFRic tasks #}
+
 
 {% do LOG.debug("Finised in site/meto/jedi_lfric_tests/tasks_jedi_lfric_tests_azspice.cylc") %}

@@ -33,8 +33,6 @@
             --ntasks = 6
             --cpus-per-task = 1
             --hint = nomultithread
-            --mem = 60G
-            --time = 01:30:00
         [[[environment]]]
             HDF5_USE_FILE_LOCKING = FALSE
 
@@ -54,9 +52,6 @@
 
     [[XC50_MESH_INTEL]]
         inherit = XC50_SL
-        [[[directives]]]
-            --ntasks = 1
-            --time = 00:05:00
         [[[environment]]]
             ROSE_APP_COMMAND_KEY = srun
 

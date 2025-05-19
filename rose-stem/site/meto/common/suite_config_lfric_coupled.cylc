@@ -14,13 +14,14 @@
 
 {% set ex1a_coupled_cce = "module unload xios/2701-h57fm7d || true; module load cray-hdf5-parallel; module load cray-netcdf-hdf5parallel; module use /data/users/moci/modules_ngms/modules; module load GC4-PrgEnv/2024-01-lfric_apps_coupled_port-cpe23.05/5548.lua;" %}
 
-
-
 {% set ex1a_coupled_setup = 'module list ; echo $FFLAGS ; echo $LDFLAGS' %}
 
 {% set ex1a_coupled_run = '. $BIG_DATA_DIR/ancils/lfric_coupled/ocean/ocean_ancil_GO8p0_CORE_forcing_eORCA025 ; '~
                           'DIAG_MEAN_PERIOD="INVALID_PERIOD" ; '~
                           'ulimit -s unlimited' %}
+
+{# Record the Site 1st Step fcm_make platform #}
+{% do site_vars.update({"coupled_fcm_make_platform": "azspice"}) %}
 
     [[EX1A_COUPLED_BUILD_CCE]]
         inherit=EX1A_BASE,EX1A_BUILD,EX1A_CCE

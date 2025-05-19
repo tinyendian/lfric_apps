@@ -25,4 +25,6 @@
 {# Set fixed release version the KGO corresponds to #}
 {% set BASE = "vn1.0" %}
 
+{% include "site/ncas/common/default_directives.cylc" %}
+
 {% do LOG.debug("Finished in site/ncas/variables.cylc") %}

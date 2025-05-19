@@ -3,7 +3,6 @@
 {% if task_ns.conf_name == "nwp_gal9_perf-C192_MG" %}
 
     {% do task_dict.update({
-        "opt_confs": ["nwp_gal9_perf"],
         "resolution": "C192_MG",
         "DT": 720,
         "tsteps": 120,

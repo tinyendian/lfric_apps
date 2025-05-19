@@ -70,4 +70,6 @@
 {% include "site/meto/variables_azspice.cylc" %}
 {% include "site/meto/variables_ex1a.cylc" %}
 
+{% include "site/meto/common/default_directives.cylc" %}
+
 {% do LOG.debug("Finished in site/meto/variables.cylc") %}
