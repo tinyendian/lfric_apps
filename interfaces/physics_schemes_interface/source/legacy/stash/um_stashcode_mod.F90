@@ -588,6 +588,13 @@ integer, parameter :: stashcode_accsol_nn         = 34250
 integer, parameter :: stashcode_corsol_nn         = 34251
 integer, parameter :: stashcode_supinsol_no       = 34262
 integer, parameter :: stashcode_supinsol_du       = 34263
+integer, parameter :: stashcode_aitsol_mp         = 34264
+integer, parameter :: stashcode_accsol_mp         = 34265
+integer, parameter :: stashcode_corsol_mp         = 34266
+integer, parameter :: stashcode_aitinsol_mp       = 34267
+integer, parameter :: stashcode_accinsol_mp       = 34268
+integer, parameter :: stashcode_corinsol_mp       = 34269
+integer, parameter :: stashcode_supinsol_mp       = 34270
 
 ! RADAER prognostics
 integer, parameter :: stashcode_dryd_ait_sol      = 34921
@@ -639,6 +646,13 @@ integer, parameter :: stashcode_pvol_cor_nn_sol   = 34870
 integer, parameter :: stashcode_dryd_sup_insol    = 34859
 integer, parameter :: stashcode_rho_sup_insol     = 34860
 integer, parameter :: stashcode_pvol_sup_du_insol = 34861
+integer, parameter :: stashcode_pvol_ait_mp_sol   = 34852
+integer, parameter :: stashcode_pvol_acc_mp_sol   = 34853
+integer, parameter :: stashcode_pvol_cor_mp_sol   = 34854
+integer, parameter :: stashcode_pvol_ait_mp_insol = 34855
+integer, parameter :: stashcode_pvol_acc_mp_insol = 34856
+integer, parameter :: stashcode_pvol_cor_mp_insol = 34857
+integer, parameter :: stashcode_pvol_sup_mp_insol = 34858
 
 ! Needed in hybrid resolution model when running ACTIVATE in senior UM.
 integer, parameter :: stashcode_dryd_nuc_sol    = 34862
@@ -897,6 +911,32 @@ integer, parameter :: stashcode_pm10_no3          = 38671
 integer, parameter :: stashcode_pm2p5_no3         = 38672
 integer, parameter :: stashcode_pm10_nn           = 38673
 integer, parameter :: stashcode_pm2p5_nn          = 38674
+
+!UKCA Microplastic diagnostics
+integer, parameter :: stashcode_mp_ait_sol        = 38747
+integer, parameter :: stashcode_mp_acc_sol        = 38748
+integer, parameter :: stashcode_mp_cor_sol        = 38749
+integer, parameter :: stashcode_mp_ait_insol      = 38750
+integer, parameter :: stashcode_mp_acc_insol      = 38751
+integer, parameter :: stashcode_mp_cor_insol      = 38752
+integer, parameter :: stashcode_mp_sup_insol      = 38753
+integer, parameter :: stashcode_mp_ait_sol_load   = 38754
+integer, parameter :: stashcode_mp_acc_sol_load   = 38755
+integer, parameter :: stashcode_mp_cor_sol_load   = 38756
+integer, parameter :: stashcode_mp_ait_insol_load = 38757
+integer, parameter :: stashcode_mp_acc_insol_load = 38758
+integer, parameter :: stashcode_mp_cor_insol_load = 38759
+integer, parameter :: stashcode_mp_sup_insol_load = 38760
+integer, parameter :: stashcode_mp_total_load     = 38761
+integer, parameter :: stashcode_pm10_mp           = 38762
+integer, parameter :: stashcode_pm2p5_mp          = 38763
+integer, parameter :: stashcode_mp_ait_sol_ps     = 38936
+integer, parameter :: stashcode_mp_acc_sol_ps     = 38937
+integer, parameter :: stashcode_mp_cor_sol_ps     = 38938
+integer, parameter :: stashcode_mp_ait_insol_ps   = 38939
+integer, parameter :: stashcode_mp_acc_insol_ps   = 38940
+integer, parameter :: stashcode_mp_cor_insol_ps   = 38941
+integer, parameter :: stashcode_mp_sup_insol_ps   = 38942
 
 !----------------------------------------------------------
 ! UKCA chemical diagnostics - section 50

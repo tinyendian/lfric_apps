@@ -486,7 +486,7 @@ contains
     integer(i_def) :: n, n_pft, error_code
     logical(l_def) :: l_fix_nacl_density
     logical(l_def) :: l_fix_ukca_hygroscopicities
-    logical(l_def) :: l_dust_ageing_on
+    logical(l_def) :: l_dust_mp_ageing
     logical(l_def) :: dust_loaded = .false.
 
     ! ----------------------------------------------------------------
@@ -542,14 +542,14 @@ contains
           i_glomap_clim_setup = i_sussbcocdu_7mode
           l_fix_nacl_density = .true.
           l_fix_ukca_hygroscopicities = .false.
-          l_dust_ageing_on = .false.
+          l_dust_mp_ageing = .false.
           i_glomap_clim_tune_bc = i_ukca_bc_tuned
           call glomap_clim_mode_setup_interface( i_glomap_clim_setup,          &
                                                  l_radaer,                     &
                                                  i_glomap_clim_tune_bc,        &
                                                  l_fix_nacl_density,           &
                                                  l_fix_ukca_hygroscopicities,  &
-                                                 l_dust_ageing_on )
+                                                 l_dust_mp_ageing )
         case(glomap_mode_ukca)
           ! UKCA initialisation (via a call to um_ukca_init) is deferred
           ! until after that for JULES since JULES settings are required

@@ -61,6 +61,11 @@ integer, parameter :: itemN_nitrate_diags = 668
 integer, parameter :: item1_dust3mode_diags = 675
 integer, parameter :: itemN_dust3mode_diags = 701
 
+!  Diagnostic range for microplastic scheme
+!  includes the CMIP diagnostics but not the PM or plume scav diags
+integer, parameter :: item1_microplastic_diags = 706
+integer, parameter :: itemN_microplastic_diags = 761
+
 type :: code
   integer :: section        ! section code
   integer :: item           ! item code
@@ -81,7 +86,7 @@ end type code
 !     Number of tracers, emissions and diagnostics, set according
 !     to GUI choices in ukca_setd1defs
 
-integer, save   :: nmax_plume_diags = 36 ! Max no plume scavenging diags
+integer, save   :: nmax_plume_diags = 43 ! Max no plume scavenging diags
 integer, save   :: n_strat_fluxdiags  ! No. strat flux diags
 integer, save   :: n_MODE_diags       ! No. diagnostics for MODE
 

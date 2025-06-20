@@ -97,7 +97,7 @@ use ukca_config_specification_mod,  only: glomap_variables
 ! available before call to UKCA
 use ukca_mode_setup,           only: nmodes, mode_names, cp_su, cp_cl,         &
                                      cp_bc, cp_oc, cp_du, cp_so, cp_nh4,       &
-                                     cp_no3, cp_nn
+                                     cp_no3, cp_nn, cp_mp
 
 use ukca_nmspec_mod,           only: nm_spec_active
 use um_parcore,                only: mype
@@ -189,7 +189,9 @@ do i=1,size(nm_spec_active)
       icp = cp_no3
     case ('NN')
       icp = cp_nn
-    case DEFAULT
+    case ('MP')
+      icp = cp_mp
+    case default
       icode = 1
       cmessage = ' Unknown component in case statement'
       write(ummessage,'(A40,A10)') cmessage,nm_spec_active(i)
@@ -324,7 +326,7 @@ if (any(prekp1(:) > precip_lim)) then
                               trapkp1,                                         &
                               xpkp1(:) + prekp1(:)*gg/flxkp1(:),               &
                               traprekp1(:,:) )
-  case DEFAULT
+  case default
     cmessage = ' Plume scavenging is not supported for this convection version'
     icode = 1
     write(ummessage,'(A65,I4)') cmessage,i_convection_vn
@@ -734,7 +736,7 @@ case (2)
     rscavn(:) = [ 0.10, 0.25, 0.85, 0.99, 0.20, 0.40, 0.40, 0.40 ]
   end if
   rscavm(:) = rscavn(:)
-case DEFAULT
+case default
   cmessage = 'i_mode_nucscav out of range'
   icode = 1
   write(ummessage,'(A40,I8)') cmessage,i_mode_nucscav

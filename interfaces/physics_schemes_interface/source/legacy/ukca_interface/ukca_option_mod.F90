@@ -242,10 +242,14 @@ logical :: l_no3_prod_in_aero_step = .false.
 real    :: hno3_uptake_coeff = rmdi
 
 ! Flag to turn on the Slinn impaction scavenging scheme for dust
-logical :: l_dust_slinn_impc_scav = .false.
+logical :: l_dust_mp_slinn_impc_scav = .false.
 
 ! Flag to turn on dust ageing (coag, nucl) and activation
-logical :: l_dust_ageing_on = .false.
+logical :: l_dust_mp_ageing = .false.
+
+! Microplastic emissions scheme control
+logical :: l_ukca_mp_fragment = .false.
+logical :: l_ukca_mp_fibre = .false.
 
 ! Not included in namelist at present:
 integer, parameter :: i_mode_nucscav = 3 ! Choice of nucl. scavenging co-effs:
@@ -516,8 +520,9 @@ namelist/run_ukca/ l_ukca, l_ukca_aie1, l_ukca_aie2,                           &
          l_ukca_ro2_perm, l_ukca_intph, ph_fit_coeff_a, ph_fit_coeff_b,        &
          ph_fit_intercept, l_ukca_primsu, l_ukca_primss, i_primss_method,      &
          l_ukca_fine_no3_prod, l_ukca_coarse_no3_prod, l_no3_prod_in_aero_step,&
-         hno3_uptake_coeff, l_dust_slinn_impc_scav, l_ukca_primbcoc,           &
-         l_ukca_prim_moc, l_ukca_primdu, l_dust_ageing_on,                     &
+         l_ukca_mp_fragment, l_ukca_mp_fibre,                                  &
+         hno3_uptake_coeff, l_dust_mp_slinn_impc_scav, l_ukca_primbcoc,        &
+         l_ukca_prim_moc, l_ukca_primdu, l_dust_mp_ageing,                     &
          l_bcoc_ff, l_bcoc_bf, l_bcoc_bm, l_mode_bhn_on,                       &
          l_mode_bln_on, i_ukca_activation_scheme,                              &
          l_ukca_sfix, i_mode_setup, i_mode_nzts,                               &

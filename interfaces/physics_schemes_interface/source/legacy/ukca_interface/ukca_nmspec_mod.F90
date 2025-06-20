@@ -125,8 +125,8 @@ nm_spec(1:a_max_ukcavars) = [                                                  &
 'ARNOH14   ','AROH17    ','ARNOH17   ','ANHY      ','Acc_SOL_NN',  & !250
 'Cor_SOL_NN','DHPCARB9  ','HPUCARB12 ','HUCARB9   ','IEPOX     ',  & !255
 'HMML      ','DHPR12OOH ','DHCARB9   ','RU12NO3   ','RU10NO3   ',  & !260
-'SEC_ORG_I ','Sup_INS_N ','Sup_INS_DU','XXX       ','XXX       ',  & !265
-'XXX       ','XXX       ','XXX       ','XXX       ','XXX       ',  & !270
+'SEC_ORG_I ','Sup_INS_N ','Sup_INS_DU','Ait_SOL_MP','Acc_SOL_MP',  & !265
+'Cor_SOL_MP','Ait_INS_MP','Acc_INS_MP','Cor_INS_MP','Sup_INS_MP',  & !270
 'XXX       ','XXX       ','XXX       ','XXX       ','XXX       ',  & !275
 'XXX       ','XXX       ','XXX       ','XXX       ','XXX       ',  & !280
 'XXX       ','XXX       ','XXX       ','XXX       ','XXX       ',  & !285

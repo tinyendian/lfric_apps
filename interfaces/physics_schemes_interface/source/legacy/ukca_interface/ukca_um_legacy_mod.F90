@@ -104,6 +104,21 @@ use um_stashcode_mod, only:                                                    &
   stashcode_h2o_nuc_sol_load,                                                  &
   stashcode_h2o_total,                                                         &
   stashcode_h2o_total_load,                                                    &
+  stashcode_mp_acc_sol,                                                        &
+  stashcode_mp_acc_sol_load,                                                   &
+  stashcode_mp_acc_insol,                                                      &
+  stashcode_mp_acc_insol_load,                                                 &
+  stashcode_mp_ait_sol,                                                        &
+  stashcode_mp_ait_sol_load,                                                   &
+  stashcode_mp_ait_insol,                                                      &
+  stashcode_mp_ait_insol_load,                                                 &
+  stashcode_mp_cor_sol,                                                        &
+  stashcode_mp_cor_sol_load,                                                   &
+  stashcode_mp_cor_insol,                                                      &
+  stashcode_mp_cor_insol_load,                                                 &
+  stashcode_mp_sup_insol,                                                      &
+  stashcode_mp_sup_insol_load,                                                 &
+  stashcode_mp_total_load,                                                     &
   stashcode_n_acc_insol,                                                       &
   stashcode_n_acc_sol,                                                         &
   stashcode_n_ait_insol,                                                       &
@@ -145,6 +160,7 @@ use um_stashcode_mod, only:                                                    &
   stashcode_pm10_bc,                                                           &
   stashcode_pm10_dry,                                                          &
   stashcode_pm10_du,                                                           &
+  stashcode_pm10_mp,                                                           &
   stashcode_pm10_nh4,                                                          &
   stashcode_pm10_nn,                                                           &
   stashcode_pm10_no3,                                                          &
@@ -155,6 +171,7 @@ use um_stashcode_mod, only:                                                    &
   stashcode_pm2p5_bc,                                                          &
   stashcode_pm2p5_dry,                                                         &
   stashcode_pm2p5_du,                                                          &
+  stashcode_pm2p5_mp,                                                          &
   stashcode_pm2p5_nh4,                                                         &
   stashcode_pm2p5_nn,                                                          &
   stashcode_pm2p5_no3,                                                         &
@@ -197,6 +214,7 @@ use ukca_d1_defs, only: code, imode_first, istrat_first, item1_mode_diags,     &
                         item1_nitrate_diags, item1_nitrate_noems,              &
                         itemn_nitrate_diags,                                   &
                         item1_dust3mode_diags, itemN_dust3mode_diags,          &
+                        item1_microplastic_diags, itemn_microplastic_diags,    &
                         l_ukca_mode_diags, l_ukca_plume_diags,                 &
                         l_ukca_stratflux, n_mode_diags, n_strat_fluxdiags,     &
                         nukca_d1items, ukca_diag_sect, ukca_item_sulpc,        &

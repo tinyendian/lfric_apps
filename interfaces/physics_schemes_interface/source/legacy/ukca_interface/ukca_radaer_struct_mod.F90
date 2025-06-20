@@ -48,7 +48,8 @@ character(len=*), parameter, private :: ModuleName='UKCA_RADAER_STRUCT_MOD'
 ! Note that cp_no3=7 from ukca_mode_setup is not being used by RADAER
 ! Note that cp_nh4=8 from ukca_mode_setup is not being used by RADAER
 integer, parameter :: ip_ukca_h2so4 =  9
-integer, parameter :: ip_ukca_water = 10
+! cp_mp=10 from ukca_mode_setup
+integer, parameter :: ip_ukca_water = 11
 
 integer, save :: npd_ukca_cpnt       ! nmodes*ncp
 
@@ -236,18 +237,20 @@ contains
 
 ! #############################################################################
 
-subroutine allocate_radaer_struct(ukca_radaer, ncp)
+subroutine allocate_radaer_struct(ukca_radaer, glomap_variables)
 
 ! To allocate arrays in the structure ukca_radaer using the number of modes
 ! and number of components configured in the GLOMAP setup routine.
 
-use ukca_mode_setup, only: nmodes, ncp_max, cp_no3
+use ukca_mode_setup, only: nmodes, ncp_max, cp_no3, glomap_variables_type
 use parkind1,        only: jprb, jpim
 use yomhook,         only: lhook, dr_hook
 implicit none
 
-type(ukca_radaer_struct), intent(in out) :: ukca_radaer
-integer,                  intent(in)     :: ncp
+type(ukca_radaer_struct),    intent(in out) :: ukca_radaer
+type(glomap_variables_type), intent(in)     :: glomap_variables
+
+integer :: ncp
 
 integer(kind=jpim), parameter :: zhook_in  = 0
 integer(kind=jpim), parameter :: zhook_out = 1
@@ -257,6 +260,7 @@ character(len=*), parameter :: RoutineName='ALLOCATE_RADAER_STRUCT'
 
 if (lhook) call dr_hook(ModuleName//':'//RoutineName,zhook_in,zhook_handle)
 
+ncp                          = glomap_variables%ncp
 npd_ukca_cpnt                = ncp * nmodes
 ncp_max_x_nmodes             = ncp_max * nmodes
 
@@ -267,7 +271,9 @@ ukca_radaer%ncp_max_x_nmodes = ncp_max_x_nmodes
 
 ! Amend the indices of H2SO4 and water for sodium nitrate inclusion
 if (ncp >= cp_no3) then
-  ukca_radaer%l_nitrate = .true.
+  if (any(glomap_variables%component (:,cp_no3))) then
+    ukca_radaer%l_nitrate = .true.
+  end if
 end if
 
 if (.not. allocated(ukca_radaer%i_mode_type))                                  &
