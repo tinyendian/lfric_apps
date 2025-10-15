@@ -244,3 +244,41 @@ class vn22_t36(MacroUpgrade):
         )
 
         return config, self.reports
+
+
+class vn22_t797(MacroUpgrade):
+    """Upgrade macro for ticket #797 by Charlotte Norris."""
+
+    BEFORE_TAG = "vn2.2_t36"
+    AFTER_TAG = "vn2.2_t797"
+
+    def upgrade(self, config, meta_config=None):
+        # Commands From: rose-meta/um-chemistry
+        """
+        Add fastjx_numwavel, fjx_solcyc_type, fjx_scat_file, fjx_solar_file,
+        fastjx_dir, fjx_spec_file to namelist chemistry
+        """
+        self.add_setting(
+            config, ["namelist:chemistry", "fastjx_numwavel"], "18"
+        )
+        self.add_setting(config, ["namelist:chemistry", "fjx_solcyc_type"], "0")
+        self.add_setting(
+            config, ["namelist:chemistry", "fjx_scat_file"], "'FJX_scat.dat'"
+        )
+        self.add_setting(
+            config,
+            ["namelist:chemistry", "fjx_solar_file"],
+            "'FJX_solcyc_May17.dat'",
+        )
+        self.add_setting(
+            config,
+            ["namelist:chemistry", "fjx_spec_file"],
+            "'FJX_spec_Nov11.dat'",
+        )
+        self.add_setting(
+            config,
+            ["namelist:chemistry", "fastjx_dir"],
+            "'$UMDIR/vn13.9/ctldata/UKCA/fastj'",
+        )
+
+        return config, self.reports
