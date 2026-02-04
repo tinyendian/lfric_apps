@@ -602,6 +602,20 @@ def match_lhs_assignments(node, names):
     return lhs_names
 
 
+def match_call_args(node, names):
+    """
+    Check if any symbol names in list `names` appear in the
+    the list of subroutine arguments and return those names.
+    Useful for handling false dependencies.
+    """
+    call_args = []
+    for call in node.walk(Call):
+        for arg in call.arguments:
+            if hasattr(arg, "name") and arg.name in names:
+                call_args.append(arg.name)
+    return call_args
+
+
 def add_omp_parallel_region(
     start_node,
     end_node,

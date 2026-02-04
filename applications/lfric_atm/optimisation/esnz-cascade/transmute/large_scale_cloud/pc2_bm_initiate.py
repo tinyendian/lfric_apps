@@ -24,6 +24,7 @@ from transmute_psytrans.transmute_functions import (
     get_compiler,
     first_priv_red_init,
     match_lhs_assignments,
+    match_call_args,
     OMP_PARALLEL_REGION_TRANS,
     OMP_DO_LOOP_TRANS_STATIC
 )
@@ -40,10 +41,15 @@ private_variables = [
 pure_subroutines = ["qsat", "qsat_mix", "qsat_wat", "qsat_wat_mix"]
 
 # Variables that appear on the left-hand side of assignments
-# for which PSyclone dependency errors can be ignored
+# or as call arguments for which PSyclone dependency errors
+# can be ignored
 false_dep_vars = [
     "qc_points",
-    "idx"
+    "idx",
+    "tl_in",
+    "p_theta_levels",
+    "qsi_lay",
+    "qsl_lay",
 ]
 
 
@@ -115,13 +121,19 @@ def trans(psyir):
             loop.parent.children.insert(insert_at, cblock)
 
         for loop in outer_loops[2].walk(Loop)[2:7]:
-            OMP_DO_LOOP_TRANS_STATIC.apply(loop)
+            # Check if any eligible variables appear in subroutine
+            # call arguments; these lead to false dependency errors
+            # in the parallel loop transformation that can be
+            # ignored
+            ignore_deps_vars = match_call_args(loop, false_dep_vars)
+            options = {}
+            if len(ignore_deps_vars) > 0:
+                options["ignore_dependencies_for"] = ignore_deps_vars
+            OMP_DO_LOOP_TRANS_STATIC.apply(loop, options)
 
         for loop in outer_loops[2].walk(Loop)[8:13:2]:
             # Check if any eligible variables appear on the LHS of
-            # assignment expressions; these lead to false dependency
-            # errors in the parallel loop transformation that can be
-            # ignored
+            # assignment expressions to ignore false dependency errors
             ignore_deps_vars = match_lhs_assignments(loop, false_dep_vars)
             options = {}
             if len(ignore_deps_vars) > 0:
