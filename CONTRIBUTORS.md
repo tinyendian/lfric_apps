@@ -1,5 +1,4 @@
 # Contributors
-
 | GitHub user      | Real Name          | Affiliation                      | Date       |
 | ---------------- | ------------------ | -------------------------------- | ---------- |
 | james-bruten-mo  | James Bruten       | Met Office                       | 2025-12-09 |
@@ -26,3 +25,4 @@
 | mo-jmanners      | James Manners      | Met Office                       | 2026-01-14 |
 | maggiehendry     | Maggie Hendry      | Met Office                       | 2026-01-29 |
 | stevemullerworth | Steve Mullerworth  | Met Office                       | 2026-01-28 |
+| jameskent-metoffice | James Kent      | Met Office                       | 2026-01-21 |
