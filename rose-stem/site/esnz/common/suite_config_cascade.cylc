@@ -112,8 +112,8 @@
         inherit = CASCADE_BG
         post-script = """
                       sed -i 's/-check all/-check all -check noarg_temp_created/' ${SOURCE_ROOT}/lfric_core/infrastructure/build/fortran/ifx.mk
-                      sed -i 's/-fpe0//' ${SOURCE_ROOT}/lfric_core/infrastructure/build/fortran/ifx.mk
-                      sed -i 's/-fpe0//' ${SOURCE_ROOT}/lfric_apps/applications/lfric_atm/build/fortran/ifx.mk
+                      sed -i 's/-fpe0/-fpe3/' ${SOURCE_ROOT}/lfric_core/infrastructure/build/fortran/ifx.mk
+                      sed -i 's/-fpe0/-fpe3/' ${SOURCE_ROOT}/lfric_apps/applications/lfric_atm/build/fortran/ifx.mk
                       """
         [[[environment]]]
             PLATFORM_SYNC = false
